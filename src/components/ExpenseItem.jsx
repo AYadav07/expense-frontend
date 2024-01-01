@@ -5,38 +5,40 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 2vw;
+  justify-content: center;
+  gap: 1vw;
   padding: 1vh 1vw;
-  font-size: 25px;
+  font-size: 20px;
   font-weight: 500;
-  width: 90vw;
-  background-color: ${(props) => props.col};
+  width: 94vw;
+  color: ${(props) => props.col};
+  background-color: ${(props) => props.bgCol};
+  border-radius: 5px;
 `;
 const Amount = styled.div`
-  flex: 2;
+  width: 20vw;
 `;
 const Date = styled.div`
-  flex: 2;
+  width: 14vw;
 `;
 const Category = styled.div`
-  flex: 3;
+  width: 15vw;
 `;
 const Description = styled.div`
-  flex: 8;
+  width: 43vw;
 `;
 
-export const ExpenseItem = (props) => {
+const ExpenseItem = ({ color, bgCol, amount, date, category, desc }) => {
   return (
     <>
-      <Container col={props.color}>
-        <Amount>$400</Amount>
-        <Date>29-Dec-2023</Date>
-        <Category>Grocery</Category>
-        <Description>
-          Spent so that I can save in my other Food Expenses.
-        </Description>
+      <Container col={color} bgCol={bgCol}>
+        <Amount>{amount}</Amount>
+        <Date>{date}</Date>
+        <Category>{category}</Category>
+        <Description>{desc}</Description>
       </Container>
     </>
   );
 };
+
+export default ExpenseItem;

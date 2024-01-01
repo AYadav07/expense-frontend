@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { ExpenseItem } from "./ExpenseItem";
+import ExpenseItem from "./ExpenseItem";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { ExpenseInput } from "./ExpenseInput";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -8,7 +11,6 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 5vh;
   overflow-y: visible;
 `;
@@ -20,9 +22,11 @@ const TopDataWrapper = styled.div`
   gap: 2vw;
   font-size: 37px;
   flex-wrap: wrap;
-  background-color: #2f4f4f;
+  background-color: grey;
   margin-top: 2vh;
-  padding: 3vh 2vw;
+  padding: 2vh 1vw;
+  min-width: 96vw;
+  border-radius: 15px;
 `;
 
 const TopDataItems = styled.div`
@@ -34,22 +38,13 @@ const TopDataItems = styled.div`
 `;
 
 const TopDataItemHeading = styled.div`
-  color: #f87b06df;
+  color: #005e16fc;
   font-weight: 400;
 `;
 
 const TopData = styled.div`
-  color: #ff0000;
+  color: #210055;
   font-weight: 800;
-`;
-
-const InputWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 2vw;
-  padding: 2vh 2vw;
-  background-color: #12042e;
-  flex-wrap: wrap;
 `;
 
 const DataWrapper = styled.div`
@@ -59,104 +54,143 @@ const DataWrapper = styled.div`
   justify-content: center;
   background-color: grey;
   padding: 2vh 1vw;
-`;
-
-const InputItems = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 1vh;
-`;
-
-const Label = styled.label`
-  color: orange;
-  font-size: 30px;
-`;
-
-const Input = styled.input`
-  width: 16vw;
-  height: 2vh;
-  font-size: 20px;
-  padding: 1vh 0.5vw;
-`;
-
-const Button = styled.button`
-  padding: 2vh 2vw;
-  font-size: 25px;
-  font-weight: 500;
-  background-color: teal;
-  color: yellow;
-  border-radius: 10px;
-  cursor: pointer;
+  min-width: 96vw;
+  border-radius: 20px;
 `;
 
 export const Home = () => {
+  const [expenseData, setExpenseData] = useState({
+    dailyExpenses: [],
+    lastMonthTotalExpense: 0,
+    lastOneYearExpense: 0,
+    lastWeekTotalExpense: 0,
+    monthlyExpense: [],
+    thisMonthTotalExpense: 0,
+    thisWeekTotalExpense: 0,
+    todayExpense: [],
+    todayTotalExpense: 0,
+    yesterdayExpense: [],
+    yesterdaytodayTotalExpense: 0,
+  });
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
+  const parseDate = (dateString) => {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const dateObj = new Date(dateString);
+    const date = dateObj.getDate();
+    const year = dateObj.getFullYear();
+    const month = dateObj.getMonth();
+
+    const dateStr = `${months[month]} ${date}, ${year}`;
+
+    return dateStr;
+  };
+
+  useEffect(() => {
+    async function fetchExpense() {
+      try {
+        const expense = await axios.get(
+          "http://localhost:5555/api/expense/get-expense",
+          {
+            withCredentials: true,
+            headers: {
+              "Content-Type": "application/json", // Replace with your token
+            },
+          }
+        );
+        setExpenseData(expense.data);
+      } catch (err) {
+        setError(err);
+        console.log(error);
+        navigate("/sign-in");
+      }
+    }
+    fetchExpense();
+  }, []);
+
+  useEffect(() => {
+    console.log("Updated Expense Data:", expenseData.todayExpense);
+    expenseData.todayExpense.map((item) => {
+      console.log(item);
+    });
+  }, [expenseData]);
+  console.log("first");
   return (
     <>
       <Container>
         <TopDataWrapper>
           <TopDataItems>
             <TopDataItemHeading>Today</TopDataItemHeading>
-            <TopData>$123</TopData>
+            <TopData>${expenseData.todayTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Yesterday</TopDataItemHeading>
-            <TopData>$254</TopData>
+            <TopData>${expenseData.yesterdaytodayTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>This Week</TopDataItemHeading>
-            <TopData>$1350</TopData>
+            <TopData>${expenseData.thisWeekTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Last Week</TopDataItemHeading>
-            <TopData>$1653</TopData>
+            <TopData>${expenseData.lastWeekTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>This Month</TopDataItemHeading>
-            <TopData>$3590</TopData>
+            <TopData>${expenseData.thisMonthTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Last Month</TopDataItemHeading>
-            <TopData>$7896</TopData>
+            <TopData>${expenseData.lastMonthTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Last Year</TopDataItemHeading>
-            <TopData>$98368</TopData>
+            <TopData>${expenseData.lastOneYearExpense}</TopData>
           </TopDataItems>
         </TopDataWrapper>
-        <InputWrapper>
-          <InputItems>
-            <Label>Amount</Label>
-            <Input />
-          </InputItems>
-          <InputItems>
-            <Label>Category</Label>
-            <Input />
-          </InputItems>
-          <InputItems>
-            <Label>Description</Label>
-            <Input />
-          </InputItems>
-          <InputItems>
-            <Label>Date</Label>
-            <Input />
-          </InputItems>
-          <InputItems>
-            <Button>Add Expense</Button>
-          </InputItems>
-        </InputWrapper>
+        <ExpenseInput />
         <DataWrapper>
-          <ExpenseItem color={"red"} />
-          <ExpenseItem color={"blue"} />
-          <ExpenseItem color={"green"} />
-          <ExpenseItem color={"red"} />
-          <ExpenseItem color={"blue"} />
+          <ExpenseItem
+            color={"#faf8f8"}
+            bgCol={"#333333"}
+            amount={"Amount"}
+            date={"Date"}
+            category={"Category"}
+            desc={"Description"}
+          />
+
+          {expenseData.todayExpense.map((exp, index) => (
+            <ExpenseItem
+              key={index} // Remember to add a unique key when mapping over an array
+              color={"#000000"}
+              bgCol={index % 2 === 0 ? "#f5f5f5" : "#e0e0e0"}
+              amount={exp.amount}
+              date={parseDate(exp.expenseDate)} //new Date(exp.expenseDate).toLocaleDateString()}
+              category={exp.category}
+              desc={exp.description}
+            />
+          ))}
         </DataWrapper>
       </Container>
     </>

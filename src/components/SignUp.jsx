@@ -1,5 +1,7 @@
+import { useState } from "react";
 import React from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const Container = styled.div`
   background-color: #121212;
@@ -76,6 +78,25 @@ const Button = styled.button`
 `;
 
 export const SignUp = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  async function handleSubmit(e) {
+    try {
+      e.preventDefault();
+      const data = await axios.post("http://localhost:5555/api/auth/sign-up", {
+        username,
+        email,
+        password,
+      });
+      console.log(data);
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   return (
     <>
       <Container>
@@ -83,18 +104,22 @@ export const SignUp = () => {
           <InputItems>
             <Item>
               <Lable>User Name</Lable>
-              <Input />
+              <Input onChange={(e) => setUsername(e.target.value)} />
             </Item>
             <Item>
               <Lable>Email</Lable>
-              <Input />
+              <Input onChange={(e) => setEmail(e.target.value)} />
             </Item>
             <Item>
               <Lable>Password</Lable>
-              <Input />
+              <Input
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Item>
           </InputItems>
-          <Button> Sign Up</Button>
+          {error.length > 0 && <p>{error}</p>}
+          <Button onClick={handleSubmit}> Sign Up</Button>
         </Wrapper>
       </Container>
     </>
