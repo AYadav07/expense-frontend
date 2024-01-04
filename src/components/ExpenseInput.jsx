@@ -33,6 +33,32 @@ const Input = styled.input`
   border-radius: 8px;
 `;
 
+const DropDownItems = styled.select`
+  width: 16vw;
+  height: 4vh;
+  font-size: 20px;
+  padding: 0 0.5vw;
+  border-radius: 8px;
+`;
+
+const AddCatBG = styled.div`
+  z-index: 10;
+  background-color: #086be4;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 10;
+  padding: 2vh 1vw;
+`;
+
+const Options = styled.option`
+  width: 16vw;
+  height: 12vh;
+  font-size: 20px;
+  padding: 1vh 0.5vw;
+  border-radius: 8px;
+`;
+
 const Button = styled.button`
   padding: 1vh 1vw;
   font-size: 20px;
@@ -43,11 +69,13 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-export const ExpenseInput = () => {
+export const ExpenseInput = ({ setUpdate }) => {
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
   const [expenseDate, setExpenseDate] = useState(null);
+  const [addCategory, setAddCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState("");
 
   async function handleSubmit(e) {
     try {
@@ -58,8 +86,33 @@ export const ExpenseInput = () => {
         { withCredentials: true }
       );
       console.log(expenseData.data);
+      setAmount(0);
+      setCategory("");
+      setDescription("");
+      setExpenseDate(null);
+      setUpdate((updated) => !updated);
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  const options = ["food", "drink", "grocerry"];
+  console.log(typeof expenseDate);
+
+  function handleAddingCategory(e) {
+    e.preventDefault();
+    options.push(newCategory);
+    console.log(options);
+    setAddCategory(false);
+    setNewCategory("");
+  }
+
+  function onChangeDropdown(e) {
+    if (e.target.value === "Add new category") {
+      setAddCategory(true);
+      console.log(addCategory);
+    } else {
+      setCategory(e.target.value);
     }
   }
 
@@ -68,31 +121,56 @@ export const ExpenseInput = () => {
       <InputItems>
         <Label>Amount</Label>
         <Input
-          onChange={(e) => {
-            setAmount(e.target.value);
-          }}
+          value={amount > 0 ? amount : ""}
+          placeholder="$ Amount"
+          onChange={(e) => setAmount(e.target.value)}
         />
       </InputItems>
-      <InputItems>
+      <InputItems style={{ position: "relative" }}>
         <Label>Category</Label>
-        <Input
+        {/* <Input
+          placeholder="Category"
+          value={category}
           onChange={(e) => {
             setCategory(e.target.value);
           }}
-        />
+        /> */}
+        <DropDownItems value={category} onChange={onChangeDropdown}>
+          {options.map((option, index) => (
+            <>
+              <Options key={index} value={option}>
+                {option}
+              </Options>
+              <p>del</p>
+            </>
+          ))}
+          <Options value={"Add new category"}>Add new category</Options>
+        </DropDownItems>
+        {addCategory && (
+          <AddCatBG>
+            <Input
+              value={newCategory}
+              onChange={(e) => setNewCategory(e.target.value)}
+            />
+            <Button onClick={handleAddingCategory}>Add category</Button>
+          </AddCatBG>
+        )}
       </InputItems>
       <InputItems>
         <Label>Description</Label>
         <Input
+          placeholder="description of kharcha"
           onChange={(e) => {
             setDescription(e.target.value);
           }}
+          value={description}
         />
       </InputItems>
       <InputItems>
         <Label>Date</Label>
         <Input
           type="date"
+          value={expenseDate ? expenseDate : ""}
           onChange={(e) => {
             setExpenseDate(e.target.value);
           }}

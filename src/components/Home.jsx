@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import ExpenseItem from "./ExpenseItem";
+//import ExpenseItem from "./ExpenseItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ExpenseInput } from "./ExpenseInput";
+import { DisplayEachExpense } from "./DisplayEachExpense";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -47,16 +48,16 @@ const TopData = styled.div`
   font-weight: 800;
 `;
 
-const DataWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: grey;
-  padding: 2vh 1vw;
-  min-width: 96vw;
-  border-radius: 20px;
-`;
+// const DataWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+//   justify-content: center;
+//   background-color: grey;
+//   padding: 2vh 1vw;
+//   min-width: 96vw;
+//   border-radius: 20px;
+// `;
 
 export const Home = () => {
   const [expenseData, setExpenseData] = useState({
@@ -73,33 +74,34 @@ export const Home = () => {
     yesterdaytodayTotalExpense: 0,
   });
   const [error, setError] = useState("");
+  const [updated, setUpdate] = useState(false);
 
   const navigate = useNavigate();
 
-  const parseDate = (dateString) => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const dateObj = new Date(dateString);
-    const date = dateObj.getDate();
-    const year = dateObj.getFullYear();
-    const month = dateObj.getMonth();
+  // const parseDate = (dateString) => {
+  //   const months = [
+  //     "Jan",
+  //     "Feb",
+  //     "Mar",
+  //     "Apr",
+  //     "May",
+  //     "Jun",
+  //     "Jul",
+  //     "Aug",
+  //     "Sep",
+  //     "Oct",
+  //     "Nov",
+  //     "Dec",
+  //   ];
+  //   const dateObj = new Date(dateString);
+  //   const date = dateObj.getDate();
+  //   const year = dateObj.getFullYear();
+  //   const month = dateObj.getMonth();
 
-    const dateStr = `${months[month]} ${date}, ${year}`;
+  //   const dateStr = `${months[month]} ${date}, ${year}`;
 
-    return dateStr;
-  };
+  //   return dateStr;
+  // };
 
   useEffect(() => {
     async function fetchExpense() {
@@ -121,7 +123,7 @@ export const Home = () => {
       }
     }
     fetchExpense();
-  }, []);
+  }, [updated]);
 
   useEffect(() => {
     console.log("Updated Expense Data:", expenseData.todayExpense);
@@ -169,11 +171,11 @@ export const Home = () => {
             <TopData>${expenseData.lastOneYearExpense}</TopData>
           </TopDataItems>
         </TopDataWrapper>
-        <ExpenseInput />
-        <DataWrapper>
+        <ExpenseInput setUpdate={setUpdate} />
+        {/* <DataWrapper>
           <ExpenseItem
             color={"#faf8f8"}
-            bgCol={"#333333"}
+            bgcol={"#333333"}
             amount={"Amount"}
             date={"Date"}
             category={"Category"}
@@ -184,14 +186,19 @@ export const Home = () => {
             <ExpenseItem
               key={index} // Remember to add a unique key when mapping over an array
               color={"#000000"}
-              bgCol={index % 2 === 0 ? "#f5f5f5" : "#e0e0e0"}
+              bgcol={index % 2 === 0 ? "#f5f5f5" : "#e0e0e0"}
               amount={exp.amount}
               date={parseDate(exp.expenseDate)} //new Date(exp.expenseDate).toLocaleDateString()}
               category={exp.category}
               desc={exp.description}
             />
           ))}
-        </DataWrapper>
+        </DataWrapper> */}
+        <DisplayEachExpense
+          todayExpenseData={expenseData.todayExpense}
+          yesterdayExpenseData={expenseData.yesterdayExpense}
+          setUpdate={setUpdate}
+        />
       </Container>
     </>
   );
