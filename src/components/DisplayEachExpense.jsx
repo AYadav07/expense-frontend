@@ -1,7 +1,9 @@
-import React from "react";
+import React, { /*useEffect,*/ useEffect, useState } from "react";
 import ExpenseItem from "./ExpenseItem";
 import styled from "styled-components";
 import { ExpenseTableHeading } from "./ExpenseTableHeading";
+import { Filter } from "./Filter";
+//import axios from "axios";
 
 const DataWrapper = styled.div`
   display: flex;
@@ -14,40 +16,69 @@ const DataWrapper = styled.div`
   border-radius: 20px;
 `;
 
-export const DisplayEachExpense = ({
-  todayExpenseData,
-  yesterdayExpenseData,
-  setUpdate,
-}) => {
-  console.log(todayExpenseData);
+const Button = styled.button`
+  background-color: #706f6f;
+  color: #353131;
+  width: 7vw;
+  padding: 1vh 1vw;
+  cursor: pointer;
+  margin-bottom: 1vh;
+  border: none;
+  border-radius: 10px;
+`;
+
+export const DisplayEachExpense = ({ setUpdate, expenses }) => {
+  // const [cats, setCats] = useState([]);
+  // const [toDate, setToDate] = useState("");
+  // const [fromDate, setFromDate] = useState("2024-01-01");
+  const [data, setData] = useState([]);
+  const [filter, setFilter] = useState(false);
+  // useEffect(() => {
+  //   const queryString = `cats=${cats.join(
+  //     ","
+  //   )}&fromDate=${fromDate}&toDate=${toDate}`;
+  //   async function getData() {
+  //     try {
+  //       const resData = await axios.get(
+  //         `http://localhost:5555/api/expense/get-expense-data?${queryString}`,
+  //         { withCredentials: true }
+  //       );
+  //       console.log(resData);
+  //       setData(resData.data);
+  //     } catch (err) {
+  //       console.log(err);
+  //       console.log(setCats);
+  //       console.log(setFromDate);
+  //       console.log(setToDate);
+  //     }
+  //   }
+
+  //   getData();
+  // }, []);
+
+  useEffect(() => {
+    if (!filter) {
+      setData(expenses);
+    }
+  }, [filter]);
+
+  useEffect(() => {
+    setData(expenses);
+  }, [expenses]);
 
   return (
     <DataWrapper>
-      {/* <ExpenseItem
-        color={"#faf8f8"}
-        b
-        amount={"Amount"}
-        date={"Date"}
-        category={"Category"}
-        desc={"Description"}
-      /> */}
-
+      {filter ? (
+        <Filter setData={setData} setFilter={setFilter} />
+      ) : (
+        <Button onClick={() => setFilter(true)}>Use Filter</Button>
+        //<button onClick={() => setFilter(true)}> Use Filter</button>
+      )}
       <ExpenseTableHeading col={"#faf8f8"} bgcol={"#333333"} />
-
-      {todayExpenseData.map((expense, index) => (
+      {data.map((expense, index) => (
         <ExpenseItem
-          key={index} // Remember to add a unique key when mapping over an array
+          key={index}
           col={"#000000"}
-          bgcol={index % 2 === 0 ? "#f5f5f5" : "#e0e0e0"}
-          expense={expense}
-          setUpdate={setUpdate}
-        />
-      ))}
-
-      {yesterdayExpenseData.map((expense, index) => (
-        <ExpenseItem
-          key={index} // Remember to add a unique key when mapping over an array
-          color={"#000000"}
           bgcol={index % 2 === 0 ? "#f5f5f5" : "#e0e0e0"}
           expense={expense}
           setUpdate={setUpdate}

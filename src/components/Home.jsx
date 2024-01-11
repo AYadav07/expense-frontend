@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ExpenseInput } from "./ExpenseInput";
 import { DisplayEachExpense } from "./DisplayEachExpense";
+import { GraphicalView } from "./GraphicalView";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -13,7 +14,11 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5vh;
-  overflow-y: visible;
+  // overflow-y: visible;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const TopDataWrapper = styled.div`
@@ -72,36 +77,12 @@ export const Home = () => {
     todayTotalExpense: 0,
     yesterdayExpense: [],
     yesterdaytodayTotalExpense: 0,
+    expenses: [],
   });
   const [error, setError] = useState("");
   const [updated, setUpdate] = useState(false);
 
   const navigate = useNavigate();
-
-  // const parseDate = (dateString) => {
-  //   const months = [
-  //     "Jan",
-  //     "Feb",
-  //     "Mar",
-  //     "Apr",
-  //     "May",
-  //     "Jun",
-  //     "Jul",
-  //     "Aug",
-  //     "Sep",
-  //     "Oct",
-  //     "Nov",
-  //     "Dec",
-  //   ];
-  //   const dateObj = new Date(dateString);
-  //   const date = dateObj.getDate();
-  //   const year = dateObj.getFullYear();
-  //   const month = dateObj.getMonth();
-
-  //   const dateStr = `${months[month]} ${date}, ${year}`;
-
-  //   return dateStr;
-  // };
 
   useEffect(() => {
     async function fetchExpense() {
@@ -126,10 +107,8 @@ export const Home = () => {
   }, [updated]);
 
   useEffect(() => {
-    console.log("Updated Expense Data:", expenseData.todayExpense);
-    expenseData.todayExpense.map((item) => {
-      console.log(item);
-    });
+    console.log("expense are: ");
+    console.log(expenseData.expenses);
   }, [expenseData]);
   console.log("first");
   return (
@@ -138,37 +117,37 @@ export const Home = () => {
         <TopDataWrapper>
           <TopDataItems>
             <TopDataItemHeading>Today</TopDataItemHeading>
-            <TopData>${expenseData.todayTotalExpense}</TopData>
+            <TopData>₹{expenseData.todayTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Yesterday</TopDataItemHeading>
-            <TopData>${expenseData.yesterdaytodayTotalExpense}</TopData>
+            <TopData>₹{expenseData.yesterdaytodayTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>This Week</TopDataItemHeading>
-            <TopData>${expenseData.thisWeekTotalExpense}</TopData>
+            <TopData>₹{expenseData.thisWeekTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Last Week</TopDataItemHeading>
-            <TopData>${expenseData.lastWeekTotalExpense}</TopData>
+            <TopData>₹{expenseData.lastWeekTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>This Month</TopDataItemHeading>
-            <TopData>${expenseData.thisMonthTotalExpense}</TopData>
+            <TopData>₹{expenseData.thisMonthTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Last Month</TopDataItemHeading>
-            <TopData>${expenseData.lastMonthTotalExpense}</TopData>
+            <TopData>₹{expenseData.lastMonthTotalExpense}</TopData>
           </TopDataItems>
 
           <TopDataItems>
             <TopDataItemHeading>Last Year</TopDataItemHeading>
-            <TopData>${expenseData.lastOneYearExpense}</TopData>
+            <TopData>₹{expenseData.lastOneYearExpense}</TopData>
           </TopDataItems>
         </TopDataWrapper>
         <ExpenseInput setUpdate={setUpdate} />
@@ -195,9 +174,13 @@ export const Home = () => {
           ))}
         </DataWrapper> */}
         <DisplayEachExpense
-          todayExpenseData={expenseData.todayExpense}
-          yesterdayExpenseData={expenseData.yesterdayExpense}
           setUpdate={setUpdate}
+          expenses={expenseData.expenses}
+        />
+
+        <GraphicalView
+          dailyData={expenseData.dailyExpenses}
+          monthlyData={expenseData.monthlyExpense}
         />
       </Container>
     </>

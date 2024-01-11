@@ -85,7 +85,7 @@ const ExpenseItem = ({ col, bgcol, expense, setUpdate }) => {
   return (
     <>
       <Container col={col} bgcol={bgcol}>
-        <Amount>{expense.amount}</Amount>
+        <Amount>₹{expense.amount}</Amount>
         <DateStyle>{parseDate(expense.expenseDate)}</DateStyle>
         <Category>{expense.category}</Category>
         <Description>{expense.description}</Description>

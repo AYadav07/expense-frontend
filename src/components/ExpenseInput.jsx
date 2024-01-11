@@ -1,13 +1,24 @@
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
+import { AddOption } from "./AddOption";
+
+const InputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2vh 1vw;
+  min-width: 96vw;
+  background-color: grey;
+  flex-wrap: wrap;
+  border-radius: 10px;
+`;
 
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 2vw;
   padding: 2vh 1vw;
-  min-width: 96vw;
   background-color: grey;
   flex-wrap: wrap;
   border-radius: 10px;
@@ -41,16 +52,6 @@ const DropDownItems = styled.select`
   border-radius: 8px;
 `;
 
-const AddCatBG = styled.div`
-  z-index: 10;
-  background-color: #086be4;
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  top: 10;
-  padding: 2vh 1vw;
-`;
-
 const Options = styled.option`
   width: 16vw;
   height: 12vh;
@@ -66,7 +67,14 @@ const Button = styled.button`
   background-color: teal;
   color: yellow;
   border-radius: 10px;
-  cursor: pointer;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
+  opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+`;
+
+const ErrorMessage = styled.div`
+  color: red;
+  font-size: 20px;
+  background-color: #f8f8f8;
 `;
 
 export const ExpenseInput = ({ setUpdate }) => {
@@ -75,11 +83,40 @@ export const ExpenseInput = ({ setUpdate }) => {
   const [description, setDescription] = useState("");
   const [expenseDate, setExpenseDate] = useState(null);
   const [addCategory, setAddCategory] = useState(false);
-  const [newCategory, setNewCategory] = useState("");
+  const [addDate, setAddDate] = useState(false);
+  const [newCategory, setNewCategory] = useState();
+  const [error, setError] = useState();
 
+  function validateInput() {
+    if (amount <= 0 || amount > 9999999) {
+      const err = new Error("Amount should be between 1 and 9999999");
+      err.type = "amount";
+      throw err;
+    }
+    if (description.length > 200) {
+      const err = new Error(
+        "The description should not be more than 200 words"
+      );
+      err.type = "desc";
+      throw err;
+    }
+    if (expenseDate) {
+      const now = new Date();
+      const enteredDate = new Date(expenseDate);
+
+      if (now < enteredDate) {
+        const err = Error("Date Should be less than current date and time");
+        err.type = "date";
+        throw err;
+      }
+    }
+
+    return true;
+  }
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      validateInput();
       const expenseData = await axios.post(
         "http://localhost:5555/api/expense/add-expense",
         { amount, category, description, expenseDate },
@@ -90,9 +127,14 @@ export const ExpenseInput = ({ setUpdate }) => {
       setCategory("");
       setDescription("");
       setExpenseDate(null);
+      setError("");
+      setAddDate(false);
       setUpdate((updated) => !updated);
     } catch (err) {
       console.log(err);
+      console.log(err.message);
+      //console.log(error.type);
+      setError(err.message);
     }
   }
 
@@ -117,68 +159,83 @@ export const ExpenseInput = ({ setUpdate }) => {
   }
 
   return (
-    <InputWrapper>
-      <InputItems>
-        <Label>Amount</Label>
-        <Input
-          value={amount > 0 ? amount : ""}
-          placeholder="$ Amount"
-          onChange={(e) => setAmount(e.target.value)}
-        />
-      </InputItems>
-      <InputItems style={{ position: "relative" }}>
-        <Label>Category</Label>
-        {/* <Input
-          placeholder="Category"
-          value={category}
-          onChange={(e) => {
-            setCategory(e.target.value);
-          }}
-        /> */}
-        <DropDownItems value={category} onChange={onChangeDropdown}>
-          {options.map((option, index) => (
-            <>
-              <Options key={index} value={option}>
-                {option}
-              </Options>
-              <p>del</p>
-            </>
-          ))}
-          <Options value={"Add new category"}>Add new category</Options>
-        </DropDownItems>
-        {addCategory && (
-          <AddCatBG>
-            <Input
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
+    <InputContainer>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      <InputWrapper>
+        <InputItems>
+          <Label>Amount</Label>
+          <Input
+            value={amount > 0 ? amount : ""}
+            placeholder="₹ Amount"
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </InputItems>
+        <InputItems style={{ position: "relative" }}>
+          <Label>Category</Label>
+          {/* <Input
+        placeholder="Category"
+        value={category}
+        onChange={(e) => {
+          setCategory(e.target.value);
+        }}
+      /> */}
+          <DropDownItems value={category} onChange={onChangeDropdown}>
+            <Options value={""}>Select</Options>
+            {options.map((option, index) => (
+              <>
+                <Options key={index} value={option}>
+                  {option}
+                </Options>
+                <p>del</p>
+              </>
+            ))}
+            <Options value={"Add new category"}>Add new category</Options>
+          </DropDownItems>
+          {addCategory && (
+            <AddOption
+              setNewCategory={setNewCategory}
+              handleAddingCategory={handleAddingCategory}
+              setAddCategory={setAddCategory}
             />
-            <Button onClick={handleAddingCategory}>Add category</Button>
-          </AddCatBG>
+          )}
+        </InputItems>
+        <InputItems>
+          <Label>Description</Label>
+          <Input
+            placeholder="description of kharcha"
+            onChange={(e) => {
+              setDescription(e.target.value);
+            }}
+            value={description}
+          />
+        </InputItems>
+        {addDate && (
+          <InputItems>
+            <Label>Date</Label>
+            <Input
+              type="date"
+              value={expenseDate ? expenseDate : ""}
+              onChange={(e) => {
+                setExpenseDate(e.target.value);
+              }}
+            />
+          </InputItems>
         )}
-      </InputItems>
-      <InputItems>
-        <Label>Description</Label>
-        <Input
-          placeholder="description of kharcha"
-          onChange={(e) => {
-            setDescription(e.target.value);
-          }}
-          value={description}
-        />
-      </InputItems>
-      <InputItems>
-        <Label>Date</Label>
-        <Input
-          type="date"
-          value={expenseDate ? expenseDate : ""}
-          onChange={(e) => {
-            setExpenseDate(e.target.value);
-          }}
-        />
-      </InputItems>
-      <InputItems>
-        <Button onClick={handleSubmit}>Add Expense</Button>
-      </InputItems>
-    </InputWrapper>
+
+        <InputItems>
+          {!addDate && (
+            <Label
+              style={{ cursor: "pointer" }}
+              onClick={() => setAddDate(true)}
+            >
+              Add date also
+            </Label>
+          )}
+          <Button disabled={addCategory} onClick={handleSubmit}>
+            Add Expense
+          </Button>
+        </InputItems>
+      </InputWrapper>
+    </InputContainer>
   );
 };
