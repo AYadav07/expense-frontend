@@ -5,13 +5,30 @@ const BarConatiner = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2vh;
+
+  @media (max-width: 480px) {
+    gap: 1vh;
+  }
 `;
 const Data = styled.div``;
 const Bottom = styled.div``;
 const Bars = styled.div`
-  height: ${(props) => props.height};
+  height: ${(props) => {
+    return props.height + "vh";
+  }};
   background-color: red;
-  width: 2vw;
+  width: ${(props) => {
+    return props.width + "vw";
+  }};
+
+  @media (max-width: 480px) {
+    height: ${(props) => {
+      return props.height / 2 + "vh";
+    }};
+    width: ${(props) => {
+      return props.width / 2 + "vw";
+    }};
+  }
 `;
 export const Bar = ({
   amount,

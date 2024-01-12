@@ -17,18 +17,35 @@ const Container = styled.div`
   color: ${(props) => props.col};
   background-color: ${(props) => props.bgcol};
   border-radius: 5px;
+
+  @media (max-width: 480px) {
+    font-size: 12px;
+    width: 90vw;
+  }
 `;
 const Amount = styled.div`
   width: 20vw;
+  @media (max-width: 480px) {
+    width: 18vw;
+  }
 `;
 const DateStyle = styled.div`
   width: 14vw;
+  @media (max-width: 480px) {
+    width: 13vw;
+  }
 `;
 const Category = styled.div`
   width: 15vw;
+  @media (max-width: 480px) {
+    width: 14vw;
+  }
 `;
 const Description = styled.div`
-  width: 40vw;
+  width: 30vw;
+  @media (max-width: 480px) {
+    width: 28vw;
+  }
 `;
 
 const DeleteIconStyle = styled.div`
@@ -39,6 +56,10 @@ const DeleteIconStyle = styled.div`
 
   &:hover {
     color: red;
+  }
+
+  @media (max-width: 480px) {
+    width: 2vw;
   }
 `;
 

@@ -5,19 +5,31 @@ import { Bar } from "./Bar";
 const BarchartContainer = styled.div`
   background-color: white;
   max-width: 96vw;
+  border-radius: 10px;
+  padding: 2vh 1vw;
+  margin-bottom: 2vh;
+  @media (max-width: 480px) {
+    width: 90vw;
+  }
 `;
 
 const BarGraph = styled.div`
-  border-left: 2px solid balck;
-  border-bottom: 2px solid black;
-  padding: 5vh 3vw;
+  width: 90vw;
+  padding: 5vh 1vw;
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: 1vw;
+  gap: 0.7vw;
+
+  @media (max-width: 480px) {
+    width: 88vw;
+    font-size: 10px;
+    justify-content: space-between;
+    gap: 0;
+  }
 `;
 
-export const BarChart = ({ data }) => {
+export const BarChart = ({ data, width }) => {
   const maxValue = Math.max(...data.map((item) => item.amount));
   return (
     <BarchartContainer>
@@ -29,11 +41,11 @@ export const BarChart = ({ data }) => {
             <Bar
               key={index}
               amount={item.amount}
-              height={`${h}vh`}
+              height={h}
               label={item.label}
               barcolor={"#45455"}
               barbackground={"#c8987"}
-              width={"2vw"}
+              width={width}
             />
           );
         })}

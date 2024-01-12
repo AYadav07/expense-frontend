@@ -15,11 +15,21 @@ export const MultiSelect = ({ setCats, cats }) => {
   ];
 
   const customStyles = {
-    control: (provided) => ({
+    // Default styles
+    container: (provided) => ({
       ...provided,
-      width: "30vw", // Set your desired width here
+      width: "50vw", // Default width
     }),
+
+    // Media query for larger screens
+    "@media (max-width: 480px)": {
+      container: (provided) => ({
+        ...provided,
+        width: "80vw", // Adjusted width for larger screens
+      }),
+    },
   };
+
   return (
     <Select
       closeMenuOnSelect={false}

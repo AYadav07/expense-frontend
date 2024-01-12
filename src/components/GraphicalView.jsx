@@ -1,5 +1,18 @@
 import React from "react";
 import { BarChart } from "./BarChart";
+import styled from "styled-components";
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 96vw;
+  border-radius: 10px;
+
+  @media (max-width: 480px) {
+    min-width: 96vw;
+  }
+`;
 
 export const GraphicalView = ({ dailyData, monthlyData }) => {
   const wordsMonth = [
@@ -79,9 +92,9 @@ export const GraphicalView = ({ dailyData, monthlyData }) => {
   console.log(newMonthlyData);
 
   return (
-    <div>
-      <BarChart data={newDailyData} />
-      <BarChart data={newMonthlyData} />
-    </div>
+    <Container>
+      <BarChart data={newDailyData} width={2} />
+      <BarChart data={newMonthlyData} width={4} />
+    </Container>
   );
 };

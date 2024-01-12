@@ -12,6 +12,10 @@ const InputContainer = styled.div`
   background-color: grey;
   flex-wrap: wrap;
   border-radius: 10px;
+
+  @media (max-width: 480px) {
+    min-width: 92vw;
+  }
 `;
 
 const InputWrapper = styled.div`
@@ -22,6 +26,13 @@ const InputWrapper = styled.div`
   background-color: grey;
   flex-wrap: wrap;
   border-radius: 10px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 2vh;
+    align-items: center;
+    justify-content: center;
+  }
 `;
 
 const InputItems = styled.div`
@@ -29,27 +40,46 @@ const InputItems = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 1vh;
+
+  @media (max-width: 480px) {
+    width: 85vw;
+    flex-direction: row;
+    gap: 1vw;
+    justify-content: space-between;
+    align-items: center;
+  }
 `;
 
 const Label = styled.label`
   color: #2e0149;
-  font-size: 20px;
+  font-size: 15px;
 `;
 
 const Input = styled.input`
   width: 16vw;
-  height: 2vh;
+  height: 3vh;
   font-size: 20px;
   padding: 1vh 0.5vw;
   border-radius: 8px;
+
+  @media (max-width: 480px) {
+    width: 60vw;
+    font-size: 15px;
+  }
 `;
 
 const DropDownItems = styled.select`
   width: 16vw;
-  height: 4vh;
+  height: 6vh;
   font-size: 20px;
   padding: 0 0.5vw;
   border-radius: 8px;
+
+  @media (max-width: 480px) {
+    width: 62vw;
+    font-size: 15px;
+    height: 4vh;
+  }
 `;
 
 const Options = styled.option`
@@ -58,6 +88,12 @@ const Options = styled.option`
   font-size: 20px;
   padding: 1vh 0.5vw;
   border-radius: 8px;
+
+  @media (max-width: 480px) {
+    width: 60vw;
+    font-size: 15px;
+    height: 4vh;
+  }
 `;
 
 const Button = styled.button`
@@ -69,6 +105,12 @@ const Button = styled.button`
   border-radius: 10px;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   opacity: ${(props) => (props.disabled ? "0.5" : "1")};
+
+  @media (max-width: 480px) {
+    padding: 1vh 1vw;
+    font-size: 12px;
+    font-weight: 500;
+  }
 `;
 
 const ErrorMessage = styled.div`
@@ -186,7 +228,6 @@ export const ExpenseInput = ({ setUpdate }) => {
                 <Options key={index} value={option}>
                   {option}
                 </Options>
-                <p>del</p>
               </>
             ))}
             <Options value={"Add new category"}>Add new category</Options>

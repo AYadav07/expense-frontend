@@ -14,6 +14,10 @@ const DataWrapper = styled.div`
   padding: 2vh 1vw;
   min-width: 96vw;
   border-radius: 20px;
+
+  @media (max-width: 480px) {
+    min-width: 92vw;
+  }
 `;
 
 const Button = styled.button`
@@ -23,8 +27,16 @@ const Button = styled.button`
   padding: 1vh 1vw;
   cursor: pointer;
   margin-bottom: 1vh;
+  margin-left: auto;
+  margin-right: 1vw;
   border: none;
   border-radius: 10px;
+
+  @media (max-width: 480px) {
+    width: 20vw;
+    margin-left: auto;
+    margin-right: 1vw;
+  }
 `;
 
 export const DisplayEachExpense = ({ setUpdate, expenses }) => {

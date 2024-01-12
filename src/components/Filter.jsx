@@ -8,6 +8,11 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  margin-bottom: 2vh;
+
+  @media (max-width: 480px) {
+    max-width: 80vw;
+  }
 `;
 // const DateContainer = styled.div``;
 // const CategoryContainer = styled.div``;
@@ -17,16 +22,24 @@ const FilterOption = styled.div`
   justify-content: center;
   align-items: center;
   gap: 2vw;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+  }
 `;
 const Button = styled.button`
   background-color: #706f6f;
   color: #353131;
   width: 9vw;
-  padding: 1vh 0.5vw;
   cursor: pointer;
-  margin-bottom: 1vh;
+  margin: auto;
   border: none;
   border-radius: 10px;
+  padding: 1vh 0.3vw;
+
+  @media (max-width: 480px) {
+    width: 20vw;
+  }
 `;
 const InputItems = styled.div`
   display: flex;
@@ -35,8 +48,16 @@ const InputItems = styled.div`
   justify-content: center;
   gap: 1vh;
 `;
+
+const ItemGroup = styled.div`
+  display: flex;
+  gap: 2vw;
+`;
 const Label = styled.label`
   font-size: 16px;
+  @media (max-width: 480px) {
+    font-size: 13px;
+  }
 `;
 const Input = styled.input`
   width: 12vw;
@@ -45,6 +66,12 @@ const Input = styled.input`
   border-radius: 10px;
   border: none;
   margin-bottom: 1vh;
+
+  @media (max-width: 480px) {
+    width: 20vw;
+    font-size: 12px;
+    width: 20vw;
+  }
 `;
 
 export const Filter = ({ setData, setFilter }) => {
@@ -109,19 +136,22 @@ export const Filter = ({ setData, setFilter }) => {
     <Container>
       <FilterOption>
         <InputItems>
-          <Label>From Date</Label>
-          <Input type="date" onChange={(e) => setFromDate(e.target.value)} />
-        </InputItems>
-        <InputItems>
-          <Label>To Date</Label>
-          <Input type="date" onChange={(e) => setToDate(e.target.value)} />
-        </InputItems>
-
-        <InputItems>
           <Label>Select Category</Label>
           <MultiSelect setCats={setCats} cats={cats} />
         </InputItems>
-        <Button onClick={handleFilter}>{filterButtonValue}</Button>
+
+        <ItemGroup>
+          <InputItems>
+            <Label>From Date</Label>
+            <Input type="date" onChange={(e) => setFromDate(e.target.value)} />
+          </InputItems>
+          <InputItems>
+            <Label>To Date</Label>
+            <Input type="date" onChange={(e) => setToDate(e.target.value)} />
+          </InputItems>
+
+          <Button onClick={handleFilter}>{filterButtonValue}</Button>
+        </ItemGroup>
       </FilterOption>
     </Container>
   );

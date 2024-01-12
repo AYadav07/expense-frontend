@@ -12,6 +12,10 @@ const AddCatBG = styled.div`
   border-radius: 15px;
   height: 30vh;
   width: 30vw;
+
+  @media (max-width: 480px) {
+    width: 80vw;
+  }
 `;
 
 const Input = styled.input`
@@ -21,6 +25,10 @@ const Input = styled.input`
   padding: 1vh 0.5vw;
   border-radius: 8px;
   margin-bottom: 4vh;
+
+  @media (max-width: 480px) {
+    width: 40vw;
+  }
 `;
 
 const Button = styled.button`
@@ -31,6 +39,10 @@ const Button = styled.button`
   color: yellow;
   border-radius: 10px;
   cursor: pointer;
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+  }
 `;
 
 const CloseIcon = styled.div`
@@ -42,6 +54,10 @@ const CloseIcon = styled.div`
 const Label = styled.label`
   font-size: 20px;
   margin-bottom: 1vh;
+
+  @media (max-width: 480px) {
+    font-size: 16px;
+  }
 `;
 
 export const AddOption = ({

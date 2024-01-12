@@ -19,6 +19,15 @@ const Container = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 2vh;
+    max-width: 100vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const TopDataWrapper = styled.div`
@@ -33,8 +42,23 @@ const TopDataWrapper = styled.div`
   padding: 2vh 1vw;
   min-width: 96vw;
   border-radius: 15px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    gap: 1vw;
+    font-size: 25px;
+    min-width: 92vw;
+  }
 `;
 
+const TopDataGroup = styled.div`
+  display: flex;
+  gap: 1vw;
+  @media (max-width: 480px) {
+    width: 90vw;
+    justify-content: space-around;
+  }
+`;
 const TopDataItems = styled.div`
   display: flex;
   flex-direction: column;
@@ -115,35 +139,41 @@ export const Home = () => {
     <>
       <Container>
         <TopDataWrapper>
-          <TopDataItems>
-            <TopDataItemHeading>Today</TopDataItemHeading>
-            <TopData>₹{expenseData.todayTotalExpense}</TopData>
-          </TopDataItems>
+          <TopDataGroup>
+            <TopDataItems>
+              <TopDataItemHeading>Today</TopDataItemHeading>
+              <TopData>₹{expenseData.todayTotalExpense}</TopData>
+            </TopDataItems>
 
-          <TopDataItems>
-            <TopDataItemHeading>Yesterday</TopDataItemHeading>
-            <TopData>₹{expenseData.yesterdaytodayTotalExpense}</TopData>
-          </TopDataItems>
+            <TopDataItems>
+              <TopDataItemHeading>Yesterday</TopDataItemHeading>
+              <TopData>₹{expenseData.yesterdaytodayTotalExpense}</TopData>
+            </TopDataItems>
+          </TopDataGroup>
 
-          <TopDataItems>
-            <TopDataItemHeading>This Week</TopDataItemHeading>
-            <TopData>₹{expenseData.thisWeekTotalExpense}</TopData>
-          </TopDataItems>
+          <TopDataGroup>
+            <TopDataItems>
+              <TopDataItemHeading>This Week</TopDataItemHeading>
+              <TopData>₹{expenseData.thisWeekTotalExpense}</TopData>
+            </TopDataItems>
 
-          <TopDataItems>
-            <TopDataItemHeading>Last Week</TopDataItemHeading>
-            <TopData>₹{expenseData.lastWeekTotalExpense}</TopData>
-          </TopDataItems>
+            <TopDataItems>
+              <TopDataItemHeading>Last Week</TopDataItemHeading>
+              <TopData>₹{expenseData.lastWeekTotalExpense}</TopData>
+            </TopDataItems>
+          </TopDataGroup>
 
-          <TopDataItems>
-            <TopDataItemHeading>This Month</TopDataItemHeading>
-            <TopData>₹{expenseData.thisMonthTotalExpense}</TopData>
-          </TopDataItems>
+          <TopDataGroup>
+            <TopDataItems>
+              <TopDataItemHeading>This Month</TopDataItemHeading>
+              <TopData>₹{expenseData.thisMonthTotalExpense}</TopData>
+            </TopDataItems>
 
-          <TopDataItems>
-            <TopDataItemHeading>Last Month</TopDataItemHeading>
-            <TopData>₹{expenseData.lastMonthTotalExpense}</TopData>
-          </TopDataItems>
+            <TopDataItems>
+              <TopDataItemHeading>Last Month</TopDataItemHeading>
+              <TopData>₹{expenseData.lastMonthTotalExpense}</TopData>
+            </TopDataItems>
+          </TopDataGroup>
 
           <TopDataItems>
             <TopDataItemHeading>Last Year</TopDataItemHeading>
