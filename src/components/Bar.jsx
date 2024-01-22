@@ -5,6 +5,7 @@ const BarConatiner = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2vh;
+  align-items: center;
 
   @media (max-width: 480px) {
     gap: 1vh;

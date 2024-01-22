@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ExpenseInput } from "./ExpenseInput";
 import { DisplayEachExpense } from "./DisplayEachExpense";
 import { GraphicalView } from "./GraphicalView";
+import { Topbar } from "./Topbar";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -138,6 +139,7 @@ export const Home = () => {
   return (
     <>
       <Container>
+        <Topbar />
         <TopDataWrapper>
           <TopDataGroup>
             <TopDataItems>

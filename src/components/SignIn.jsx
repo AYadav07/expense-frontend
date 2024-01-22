@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   background-color: #121212;
@@ -129,6 +129,7 @@ export const SignIn = () => {
           {error.length > 0 && <p>{error}</p>}
           <Button onClick={handleSubmit}> Sign In</Button>
         </Wrapper>
+        <Link to="/reset-pass-request">Reset Password</Link>
       </Container>
     </>
   );
