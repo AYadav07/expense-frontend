@@ -6,6 +6,7 @@ import { SignUp } from "./components/SignUp";
 import { ResetPassReq } from "./components/resetPassword/ResetPassReq";
 import ResetPassword from "./components/resetPassword/ResetPassword";
 import { Profile } from "./components/profile/Profile";
+import { ChangePass } from "./components/change-password/ChangePass";
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
         <Route path="/reset-pass-request" element={<ResetPassReq />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/change-pass" element={<ChangePass />} />
       </Routes>
     </BrowserRouter>
   );

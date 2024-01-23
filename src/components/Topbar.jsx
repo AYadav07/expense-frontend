@@ -12,6 +12,7 @@ export const Topbar = () => {
       <LeftDetails></LeftDetails>
       <RightDetails>
         <Link to={"/profile"}>Profile</Link>
+        <Link to={"/change-pass"}>Change Password</Link>
       </RightDetails>
     </Container>
   );

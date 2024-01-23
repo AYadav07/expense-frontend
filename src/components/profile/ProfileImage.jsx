@@ -38,8 +38,7 @@ export const ProfileImage = () => {
   //   }
   async function onSubmitImg() {
     try {
-      const imageData = new FormData();
-      imageData.append("new-image", formData);
+      console.log(formData);
     } catch (error) {
       console.log(error);
     }
@@ -50,7 +49,9 @@ export const ProfileImage = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
-      setFormData(file);
+      const imageData = new FormData();
+      imageData.append("new-image", file);
+      setFormData(imageData);
     }
 
     // const formData = new FormData();
@@ -71,7 +72,7 @@ export const ProfileImage = () => {
         <Pic src={image} />
 
         <Action>
-          {formData == null && (
+          {
             <>
               <label htmlFor="fileInput">X</label>
               <input
@@ -81,7 +82,7 @@ export const ProfileImage = () => {
                 style={{ display: "none" }}
               />
             </>
-          )}
+          }
           <button onClick={onSubmitImg}>S</button>
         </Action>
       </ProfilePic>

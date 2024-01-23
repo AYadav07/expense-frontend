@@ -1,21 +1,26 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfileImage } from "./ProfileImage";
+import axios from "axios";
 
 const Container = styled.div`
-  width: 100vw;
-  height: 100vh;
+  min-width: 90vw;
+  min-height: 90vh;
   background-color: #070119e2;
   color: white;
   font-size: 25px;
+  padding: 5vh 5vw;
 `;
 const Wrapper = styled.div`
-  padding: 8vh 2vw 0;
+  background-color: azure;
   display: flex;
+  justify-content: center;
+  padding: 5vh 2vw;
+  border-radius: 20px;
 `;
 
 const ProfileDetails = styled.div`
-  width: 57vw;
+  width: 60vw;
   background-color: azure;
   color: black;
   padding: 2vh 2vw;
@@ -90,11 +95,17 @@ const Button = styled.button`
 export const Profile = () => {
   const [edit, setEdit] = useState(false);
   const [name, setName] = useState("amar7");
-  const [userName, setUserName] = useState("amar7");
+  const [username, setUsername] = useState("amar7");
 
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      const user = await axios.post(
+        "http://localhost:5555/api/profile/update-profile",
+        { name, username },
+        { withCredentials: true }
+      );
+      console.log(user);
     } catch (err) {
       console.log(err);
     }
@@ -127,11 +138,11 @@ export const Profile = () => {
             <Item>
               <Lable>username</Lable>
               {!edit ? (
-                <Value>{userName}</Value>
+                <Value>{username}</Value>
               ) : (
                 <Input
-                  onChange={(e) => setUserName(e.target.value)}
-                  value={userName}
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
                 />
               )}
             </Item>
@@ -150,7 +161,6 @@ export const Profile = () => {
           </Item>
         </ProfileDetails>
       </Wrapper>
-      <Input />
     </Container>
   );
 };
