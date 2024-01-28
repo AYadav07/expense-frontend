@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+
 const ProfilePic = styled.div`
   width: 30vw;
   background-color: azure;
@@ -26,7 +31,7 @@ const Action = styled.div`
   color: black;
 `;
 export const ProfileImage = () => {
-  // const [edit, setEdit] = useState(false);
+  const [edit, setEdit] = useState(false);
   const [image, setImage] = useState(null);
   const [formData, setFormData] = useState(null);
   console.log(image);
@@ -39,6 +44,12 @@ export const ProfileImage = () => {
   async function onSubmitImg() {
     try {
       console.log(formData);
+      const resData = await axios.post(
+        "http://localhost:5555/api/upload/profile-pic",
+        formData,
+        { withCredentials: true }
+      );
+      console.log(resData);
     } catch (error) {
       console.log(error);
     }
@@ -49,9 +60,12 @@ export const ProfileImage = () => {
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      const fileName = Date.now() + file.name;
       const imageData = new FormData();
-      imageData.append("new-image", file);
+      imageData.append("name", fileName);
+      imageData.append("profile-pic", file);
       setFormData(imageData);
+      setEdit((e) => !e);
     }
 
     // const formData = new FormData();
@@ -66,6 +80,7 @@ export const ProfileImage = () => {
     console.log("in effect");
     console.log(image);
   }, [image]);
+
   return (
     <>
       <ProfilePic>
@@ -74,7 +89,16 @@ export const ProfileImage = () => {
         <Action>
           {
             <>
-              <label htmlFor="fileInput">X</label>
+              {!edit ? (
+                <label htmlFor="fileInput">
+                  <EditOutlinedIcon />{" "}
+                </label>
+              ) : (
+                <div>
+                  <CloseOutlinedIcon onClick={() => setEdit(false)} />
+                </div>
+              )}
+
               <input
                 id="fileInput"
                 type="file"
@@ -83,7 +107,11 @@ export const ProfileImage = () => {
               />
             </>
           }
-          <button onClick={onSubmitImg}>S</button>
+          {edit && (
+            <button onClick={onSubmitImg}>
+              <SaveIcon style={{ border: "none", background: "transparent" }} />
+            </button>
+          )}
         </Action>
       </ProfilePic>
     </>
