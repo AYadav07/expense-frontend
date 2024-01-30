@@ -4,13 +4,19 @@ import styled from "styled-components";
 
 const Container = styled.div`
   display: flex;
-  width: 94vw;
+  width: 96vw;
   height: 8vh;
-  background-color: #070119e2;
+  background-color: #274da4df;
   color: white;
   align-items: center;
   justify-content: space-between;
   padding: 0 2vw;
+  position: fixed;
+  margin: 0 auto;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const LeftDetails = styled.div`
   display: flex;

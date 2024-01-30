@@ -10,6 +10,13 @@ const Container = styled.div`
   color: white;
   font-size: 25px;
   padding: 5vh 5vw;
+
+  @media (max-width: 480px) {
+    min-width: 90vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const Wrapper = styled.div`
   background-color: azure;
@@ -17,6 +24,16 @@ const Wrapper = styled.div`
   justify-content: center;
   padding: 5vh 2vw;
   border-radius: 20px;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    align-items: center;
+    gap: 2vh;
+    width: 86vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const ProfileDetails = styled.div`
@@ -26,12 +43,27 @@ const ProfileDetails = styled.div`
   padding: 2vh 2vw;
   display: flex;
   flex-direction: column;
+  @media (max-width: 480px) {
+    width: 82vw;
+    align-items: center;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const Items = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2vh;
+  @media (max-width: 480px) {
+    width: 82vw;
+    justify-content: center;
+    align-items: center;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const Item = styled.div`
   display: flex;
@@ -39,12 +71,30 @@ const Item = styled.div`
   justify-content: flex-start;
   gap: 2vw;
   margin-bottom: 5vh;
+
+  @media (max-width: 480px) {
+    flex-direction: column;
+    justify-content: center;
+    gap: 2vh;
+    max-width: 82vw;
+    margin-bottom: 3vh;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const Lable = styled.label`
   flex: 4;
   padding: 5px 8px;
   background-color: rgb(217, 240, 230);
   border-radius: 5px;
+  @media (max-width: 480px) {
+    flex: auto;
+    width: 70vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const Value = styled.div`
   flex: 8;
@@ -52,6 +102,13 @@ const Value = styled.div`
   border: 1px solid yellow;
   border-radius: 5px;
   padding: 5px 8px;
+  @media (max-width: 480px) {
+    flex: auto;
+    width: 70vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const Input = styled.input`
   flex: 8;
@@ -72,7 +129,11 @@ const Input = styled.input`
   &:focus {
   }
   @media (max-width: 480px) {
-    width: 90vw;
+    flex: auto;
+    width: 70vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 `;
 const Button = styled.button`
@@ -89,6 +150,9 @@ const Button = styled.button`
   &:hover {
     transition: all 1s ease;
     background-color: #007bff;
+  }
+  @media (max-width: 480px) {
+    width: 60vw;
   }
 `;
 
@@ -119,7 +183,6 @@ export const Profile = () => {
       boxShadow: "5px 5px 8px #888888",
       padding: "5px 10px",
       fontSize: "20px",
-      width: "25vw",
     };
   return (
     <Container>

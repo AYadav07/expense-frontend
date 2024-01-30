@@ -12,6 +12,14 @@ const ProfilePic = styled.div`
   flex-direction: column;
   justify-content: center;
   gap: 3vh;
+
+  @media (max-width: 480px) {
+    align-items: center;
+    width: 80vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 const Pic = styled.img`
   width: 20vw;
@@ -20,6 +28,14 @@ const Pic = styled.img`
   margin-left: 2vw;
   margin-top: 3vh;
   border-radius: 15px;
+
+  @media (max-width: 480px) {
+    width: 70vw;
+    height: 70vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 `;
 
 const Action = styled.div`

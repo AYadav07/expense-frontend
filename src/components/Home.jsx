@@ -15,6 +15,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5vh;
+  padding-top: 9vh;
   // overflow-y: visible;
 
   &::-webkit-scrollbar {
@@ -138,8 +139,8 @@ export const Home = () => {
   console.log("first");
   return (
     <>
+      <Topbar />
       <Container>
-        <Topbar />
         <TopDataWrapper>
           <TopDataGroup>
             <TopDataItems>
