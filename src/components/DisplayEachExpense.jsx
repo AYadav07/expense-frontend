@@ -52,7 +52,7 @@ export const DisplayEachExpense = ({ setUpdate, expenses }) => {
   //   async function getData() {
   //     try {
   //       const resData = await axios.get(
-  //         `http://localhost:5555/api/expense/get-expense-data?${queryString}`,
+  //         `https://expense-server-db0x.onrender.com/api/expense/get-expense-data?${queryString}`,
   //         { withCredentials: true }
   //       );
   //       console.log(resData);

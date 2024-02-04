@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { ProfileImage } from "./ProfileImage";
 import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userAtom } from "../../recoil/atom/userAtom";
 
 const Container = styled.div`
   min-width: 90vw;
@@ -157,18 +159,20 @@ const Button = styled.button`
 `;
 
 export const Profile = () => {
+  const [user, setUser] = useRecoilState(userAtom);
   const [edit, setEdit] = useState(false);
-  const [name, setName] = useState("amar7");
-  const [username, setUsername] = useState("amar7");
+  const [name, setName] = useState(user.name);
+  const [username, setUsername] = useState(user.username);
 
   async function handleSubmit(e) {
     try {
       e.preventDefault();
       const user = await axios.post(
-        "http://localhost:5555/api/profile/update-profile",
+        "https://expense-server-db0x.onrender.com/api/profile/update-profile",
         { name, username },
         { withCredentials: true }
       );
+      setUser(user.data);
       console.log(user);
     } catch (err) {
       console.log(err);
@@ -211,7 +215,7 @@ export const Profile = () => {
             </Item>
             <Item>
               <Lable>Email</Lable>
-              <Value style={backgroundColorOnEdit}>amr@gmail.com</Value>
+              <Value style={backgroundColorOnEdit}>{user.email}</Value>
             </Item>
           </Items>
 

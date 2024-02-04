@@ -24,7 +24,7 @@ const ResetPassword = () => {
     try {
       e.preventDefault();
       await axios.post(
-        "http://localhost:5555/api/auth/reset-password",
+        "https://expense-server-db0x.onrender.com/api/auth/reset-password",
         { password },
         { withCredentials: true }
       );

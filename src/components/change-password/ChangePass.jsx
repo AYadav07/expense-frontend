@@ -140,7 +140,7 @@ export const ChangePass = () => {
     try {
       e.preventDefault();
       const data = axios.post(
-        "http://localhost:5555/api/auth/change-pass",
+        "https://expense-server-db0x.onrender.com/api/auth/change-pass",
         { pass, oldPass },
         { withCredentials: true }
       );

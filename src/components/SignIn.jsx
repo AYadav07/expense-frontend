@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { userAtom } from "../recoil/atom/userAtom";
+import { catAtom } from "../recoil/atom/catOptions";
 
 const Container = styled.div`
   background-color: #121212;
@@ -115,6 +118,8 @@ export const SignIn = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [user, setUser] = useRecoilState(userAtom);
+  const [cat, setCat] = useRecoilState(catAtom);
 
   const navigate = useNavigate();
 
@@ -122,7 +127,7 @@ export const SignIn = () => {
     try {
       e.preventDefault();
       const data = await axios.post(
-        "http://localhost:5555/api/auth/sign-in",
+        "https://expense-server-db0x.onrender.com/api/auth/sign-in",
         {
           userId,
           password,
@@ -136,12 +141,20 @@ export const SignIn = () => {
           },
         }
       );
+      console.log(data.data);
+      setUser(data.data);
+      setCat(data.data.cat);
       navigate("/");
-      console.log(data, userId, password);
+      console.log(cat);
+      console.log(user);
     } catch (err) {
       setError(err.message);
     }
   }
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   return (
     <>
@@ -163,6 +176,7 @@ export const SignIn = () => {
           </InputItems>
           {error.length > 0 && <p>{error}</p>}
           <Button onClick={handleSubmit}> Sign In</Button>
+
           <Link to="/reset-pass-request">Reset Password</Link>
           <Link to="/sign-up">Sign Up</Link>
         </Wrapper>

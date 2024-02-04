@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AddOption } from "./AddOption";
+import { useRecoilState } from "recoil";
+import { DeleteCat } from "./DeleteCat";
+import { catAtom } from "../recoil/atom/catOptions";
 
 const InputContainer = styled.div`
   display: flex;
@@ -128,6 +131,8 @@ export const ExpenseInput = ({ setUpdate }) => {
   const [addDate, setAddDate] = useState(false);
   const [newCategory, setNewCategory] = useState();
   const [error, setError] = useState();
+  const [deleteCategory, setDeleteCategory] = useState(false);
+  const [cat, setCat] = useRecoilState(catAtom);
 
   function validateInput() {
     if (amount <= 0 || amount > 9999999) {
@@ -160,7 +165,7 @@ export const ExpenseInput = ({ setUpdate }) => {
       e.preventDefault();
       validateInput();
       const expenseData = await axios.post(
-        "http://localhost:5555/api/expense/add-expense",
+        "https://expense-server-db0x.onrender.com/api/expense/add-expense",
         { amount, category, description, expenseDate },
         { withCredentials: true }
       );
@@ -180,21 +185,34 @@ export const ExpenseInput = ({ setUpdate }) => {
     }
   }
 
-  const options = ["food", "drink", "grocerry"];
   console.log(typeof expenseDate);
 
-  function handleAddingCategory(e) {
-    e.preventDefault();
-    options.push(newCategory);
-    console.log(options);
-    setAddCategory(false);
-    setNewCategory("");
+  async function handleAddingCategory(e) {
+    try {
+      e.preventDefault();
+
+      const data = await axios.post(
+        "https://expense-server-db0x.onrender.com/api/expense/add-category",
+        { cat: newCategory },
+        { withCredentials: true }
+      );
+      if (!data.data) throw new Error("Category not added");
+
+      setCat([...cat, newCategory]);
+      setAddCategory(false);
+      setNewCategory("");
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   function onChangeDropdown(e) {
     if (e.target.value === "Add new category") {
       setAddCategory(true);
       console.log(addCategory);
+    } else if (e.target.value === "delete category") {
+      setDeleteCategory(true);
+      console.log(deleteCategory);
     } else {
       setCategory(e.target.value);
     }
@@ -222,15 +240,22 @@ export const ExpenseInput = ({ setUpdate }) => {
         }}
       /> */}
           <DropDownItems value={category} onChange={onChangeDropdown}>
-            <Options value={""}>Select</Options>
-            {options.map((option, index) => (
+            <Options key={200002} value={""}>
+              Select
+            </Options>
+            {cat?.map((option, index) => (
               <>
                 <Options key={index} value={option}>
                   {option}
                 </Options>
               </>
             ))}
-            <Options value={"Add new category"}>Add new category</Options>
+            <Options key={200000} value={"Add new category"}>
+              Add new category
+            </Options>
+            <Options key={200001} value={"delete category"}>
+              Delete category
+            </Options>
           </DropDownItems>
           {addCategory && (
             <AddOption
@@ -239,6 +264,7 @@ export const ExpenseInput = ({ setUpdate }) => {
               setAddCategory={setAddCategory}
             />
           )}
+          {deleteCategory && <DeleteCat setDel={setDeleteCategory} />}
         </InputItems>
         <InputItems>
           <Label>Description</Label>

@@ -92,7 +92,7 @@ export const Filter = ({ setData, setFilter }) => {
         console.log("Quesry String is : " + queryString);
         try {
           const resData = await axios.get(
-            `http://localhost:5555/api/expense/get-expense-data?${queryString}`,
+            `https://expense-server-db0x.onrender.com/api/expense/get-expense-data?${queryString}`,
             { withCredentials: true }
           );
           console.log(resData);
@@ -114,7 +114,7 @@ export const Filter = ({ setData, setFilter }) => {
   //   async function getData() {
   //     try {
   //       const resData = await axios.get(
-  //         `http://localhost:5555/api/expense/get-expense-data?${queryString}`,
+  //         `https://expense-server-db0x.onrender.com/api/expense/get-expense-data?${queryString}`,
   //         { withCredentials: true }
   //       );
   //       console.log(resData);

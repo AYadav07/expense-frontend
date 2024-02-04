@@ -7,20 +7,23 @@ import { ResetPassReq } from "./components/resetPassword/ResetPassReq";
 import ResetPassword from "./components/resetPassword/ResetPassword";
 import { Profile } from "./components/profile/Profile";
 import { ChangePass } from "./components/change-password/ChangePass";
+import { RecoilRoot } from "recoil";
 
 const App = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" exact element={<Home />} />
-        <Route path="/sign-in" element={<SignIn />} />
-        <Route path="/sign-up" element={<SignUp />} />
-        <Route path="/reset-pass-request" element={<ResetPassReq />} />
-        <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/change-pass" element={<ChangePass />} />
-      </Routes>
-    </BrowserRouter>
+    <RecoilRoot>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+          <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
+          <Route path="/reset-pass-request" element={<ResetPassReq />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/change-pass" element={<ChangePass />} />
+        </Routes>
+      </BrowserRouter>
+    </RecoilRoot>
   );
 };
 

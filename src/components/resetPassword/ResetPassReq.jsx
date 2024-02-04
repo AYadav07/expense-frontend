@@ -18,7 +18,7 @@ export const ResetPassReq = () => {
     try {
       e.preventDefault();
       const data = await axios.post(
-        "http://localhost:5555/api/auth/reset-pass-req",
+        "https://expense-server-db0x.onrender.com/api/auth/reset-pass-req",
         { email }
       );
       setData(data.data);

@@ -1,6 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
+import { useSetRecoilState } from "recoil";
+import { userAtom } from "../recoil/atom/userAtom";
+import { catAtom } from "../recoil/atom/catOptions";
 
 const Container = styled.div`
   display: flex;
@@ -41,6 +45,33 @@ const StyledLink = styled(Link)`
 `;
 
 export const Topbar = () => {
+  const setUser = useSetRecoilState(userAtom);
+  const setCat = useSetRecoilState(catAtom);
+  const navigate = useNavigate();
+
+  async function handelLogout() {
+    try {
+      const data = await axios.get(
+        "https://expense-server-db0x.onrender.com/api/auth/logout",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log(data);
+      setUser({
+        username: "",
+        email: "",
+        name: "",
+        profile_pic: "",
+        cat: [],
+      });
+      setCat([]);
+      navigate("/sign-in");
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <Container>
       <LeftDetails>
@@ -53,7 +84,7 @@ export const Topbar = () => {
       <RightDetails>
         <StyledLink to={"/profile"}>Profile</StyledLink>
         <StyledLink to={"/change-pass"}>Change Password</StyledLink>
-        LogOut
+        <button onClick={handelLogout}>Logout</button>
       </RightDetails>
     </Container>
   );

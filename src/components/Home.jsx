@@ -114,7 +114,7 @@ export const Home = () => {
     async function fetchExpense() {
       try {
         const expense = await axios.get(
-          "http://localhost:5555/api/expense/get-expense",
+          "https://expense-server-db0x.onrender.com/api/expense/get-expense",
           {
             withCredentials: true,
             headers: {

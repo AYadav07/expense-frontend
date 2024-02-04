@@ -3,6 +3,7 @@ import React from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useUsername } from "../hooks/useUsername";
 
 const Container = styled.div`
   background-color: #121212;
@@ -120,14 +121,18 @@ export const SignUp = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const isAvail = useUsername(username, 3000);
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      const data = await axios.post("http://localhost:5555/api/auth/sign-up", {
-        username,
-        email,
-        password,
-      });
+      const data = await axios.post(
+        "https://expense-server-db0x.onrender.com/api/auth/sign-up",
+        {
+          username,
+          email,
+          password,
+        }
+      );
       console.log(data);
     } catch (err) {
       setError(err.message);
@@ -143,6 +148,7 @@ export const SignUp = () => {
             <Item>
               <Lable>User Name</Lable>
               <Input onChange={(e) => setUsername(e.target.value)} />
+              {isAvail ? <div>yes</div> : <div>no</div>}
             </Item>
             <Item>
               <Lable>Email</Lable>
@@ -157,7 +163,9 @@ export const SignUp = () => {
             </Item>
           </InputItems>
           {error.length > 0 && <p>{error}</p>}
-          <Button onClick={handleSubmit}> Sign Up</Button>
+          <Button onClick={handleSubmit} disabled={!isAvail}>
+            Sign Up
+          </Button>
           <Link to="/sign-in">Sign In</Link>
         </Wrapper>
       </Container>

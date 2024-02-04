@@ -67,7 +67,7 @@ const ExpenseItem = ({ col, bgcol, expense, setUpdate }) => {
   async function handleDelete(id) {
     try {
       const res = await axios.delete(
-        `http://localhost:5555/api/expense/remove-expense/${id}`,
+        `https://expense-server-db0x.onrender.com/api/expense/remove-expense/${id}`,
         { withCredentials: true }
       );
       console.log(res);
