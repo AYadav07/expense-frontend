@@ -1,7 +1,6 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import axios from "axios";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/atom/userAtom";
 import { catAtom } from "../recoil/atom/catOptions";
@@ -51,13 +50,6 @@ export const Topbar = () => {
 
   async function handelLogout() {
     try {
-      const data = await axios.get(
-        "https://expense-server-db0x.onrender.com/api/auth/logout",
-        {
-          withCredentials: true,
-        }
-      );
-      console.log(data);
       document.cookie =
         "access_token" + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
       setUser({
