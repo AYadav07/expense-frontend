@@ -15,6 +15,9 @@
       "jsx": true
     }
   },
+  "globals": {
+    "process": true
+  },
   "plugins": ["react"],
   "settings": {
     "react": {

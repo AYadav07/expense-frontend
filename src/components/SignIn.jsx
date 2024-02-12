@@ -123,11 +123,19 @@ export const SignIn = () => {
 
   const navigate = useNavigate();
 
+  console.log("displaying user: ");
+  console.log(user);
+  // if (user.userId.length > 0) {
+  //   navigate("/");
+  // }
+  // eslint-disable-next-line no-undef
+  const apiUrl = process.env.REACT_APP_API_URL;
   async function handleSubmit(e) {
     try {
       e.preventDefault();
       const data = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/auth/sign-in",
+        // eslint-disable-next-line no-undef
+        `${apiUrl}/api/auth/sign-in`,
         {
           userId,
           password,
@@ -142,8 +150,10 @@ export const SignIn = () => {
         }
       );
       console.log(data.data);
-      setUser(data.data);
-      setCat(data.data.cat);
+      if (data?.data.user) {
+        setUser(data.data.user);
+        setCat(data.data.cat);
+      }
       navigate("/");
       console.log(cat);
       console.log(user);
@@ -156,6 +166,7 @@ export const SignIn = () => {
     console.log(user);
   }, [user]);
 
+  console.log("from .env" + apiUrl);
   return (
     <>
       <Container>

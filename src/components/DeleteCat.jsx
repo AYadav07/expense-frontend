@@ -2,6 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
 import { catAtom } from "../recoil/atom/catOptions";
+import axios from "axios";
 
 const AddCatBG = styled.div`
   z-index: 10;
@@ -63,10 +64,19 @@ export const DeleteCat = ({ setDel }) => {
 
   async function handelDelete(item) {
     try {
-      setCat((cats) => {
-        const newCat = cats.filter((val) => val != item);
-        return newCat;
-      });
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/api/expense/remove-category`,
+        {
+          cat: item,
+        },
+        { withCredentials: true }
+      );
+
+      if (res.data)
+        setCat((cats) => {
+          const newCat = cats.filter((val) => val != item);
+          return newCat;
+        });
     } catch (error) {
       console.log(error);
     }

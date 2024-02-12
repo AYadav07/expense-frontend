@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -14,13 +15,14 @@ export const ResetPassReq = () => {
   const [data, setData] = useState("");
   const [error, setError] = useState("");
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      const data = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/auth/reset-pass-req",
-        { email }
-      );
+      const data = await axios.post(`${apiUrl}/api/auth/reset-pass-req`, {
+        email,
+      });
       setData(data.data);
     } catch (err) {
       setError(err.message);

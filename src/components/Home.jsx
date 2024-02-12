@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-//import ExpenseItem from "./ExpenseItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ExpenseInput } from "./ExpenseInput";
 import { DisplayEachExpense } from "./DisplayEachExpense";
 import { GraphicalView } from "./GraphicalView";
 import { Topbar } from "./Topbar";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../recoil/atom/userAtom";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -25,6 +26,7 @@ const Container = styled.div`
   @media (max-width: 480px) {
     flex-direction: column;
     gap: 2vh;
+    padding-top: 3vh;
     max-width: 100vw;
     &::-webkit-scrollbar {
       display: none;
@@ -107,21 +109,24 @@ export const Home = () => {
   });
   const [error, setError] = useState("");
   const [updated, setUpdate] = useState(false);
+  const user = useRecoilValue(userAtom);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
+
+  if (user?.userId?.length == 0) {
+    navigate("/sign-in");
+  }
 
   useEffect(() => {
     async function fetchExpense() {
       try {
-        const expense = await axios.get(
-          "https://expense-server-db0x.onrender.com/api/expense/get-expense",
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json", // Replace with your token
-            },
-          }
-        );
+        const expense = await axios.get(`${apiUrl}/api/expense/get-expense`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json", // Replace with your token
+          },
+        });
         setExpenseData(expense.data);
       } catch (err) {
         setError(err);

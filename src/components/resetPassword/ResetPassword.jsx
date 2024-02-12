@@ -19,12 +19,14 @@ const ResetPassword = () => {
   const [matched, setMatched] = useState(false);
 
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   async function handleSubmit(e) {
     try {
       e.preventDefault();
       await axios.post(
-        "https://expense-server-db0x.onrender.com/api/auth/reset-password",
+        // eslint-disable-next-line no-undef
+        `${apiUrl}/api/auth/reset-password`,
         { password },
         { withCredentials: true }
       );

@@ -4,6 +4,7 @@ import { ProfileImage } from "./ProfileImage";
 import axios from "axios";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../../recoil/atom/userAtom";
+import { useUsername } from "../../hooks/useUsername";
 
 const Container = styled.div`
   min-width: 90vw;
@@ -57,7 +58,7 @@ const ProfileDetails = styled.div`
 const Items = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 2vh;
+  gap: 0;
   @media (max-width: 480px) {
     width: 82vw;
     justify-content: center;
@@ -72,7 +73,7 @@ const Item = styled.div`
   align-items: center;
   justify-content: flex-start;
   gap: 2vw;
-  margin-bottom: 5vh;
+  margin-bottom: 8vh;
 
   @media (max-width: 480px) {
     flex-direction: column;
@@ -164,16 +165,20 @@ export const Profile = () => {
   const [name, setName] = useState(user.name);
   const [username, setUsername] = useState(user.username);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+  const isAvail = useUsername(username, 300);
+
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      const user = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/profile/update-profile",
+      const userData = await axios.post(
+        // eslint-disable-next-line no-undef
+        `${apiUrl}/api/profile/update-profile`,
         { name, username },
         { withCredentials: true }
       );
-      setUser(user.data);
-      console.log(user);
+      if (userData.data) setUser(userData.data);
+      console.log(userData);
     } catch (err) {
       console.log(err);
     }
@@ -207,12 +212,42 @@ export const Profile = () => {
               {!edit ? (
                 <Value>{username}</Value>
               ) : (
-                <Input
-                  onChange={(e) => setUsername(e.target.value)}
-                  value={username}
-                />
+                <>
+                  <Input
+                    onChange={(e) => setUsername(e.target.value)}
+                    value={username}
+                  />
+                </>
               )}
             </Item>
+
+            {username != user.username &&
+              username.length >= 3 &&
+              (isAvail ? (
+                <Item
+                  style={{
+                    fontSize: "16px",
+                    color: "green",
+                    padding: "3px 0 0 5px",
+                    margin: "-4vh 2vw 1vh auto",
+                  }}
+                >
+                  Username is available.{" "}
+                </Item>
+              ) : (
+                <Item
+                  style={{
+                    fontSize: "16px",
+                    color: "red",
+                    padding: "-3px 0 0 5px",
+                    margin: "-4vh 2vw 1vh auto",
+                  }}
+                >
+                  {" "}
+                  Sorry! Username is not available.{" "}
+                </Item>
+              ))}
+
             <Item>
               <Lable>Email</Lable>
               <Value style={backgroundColorOnEdit}>{user.email}</Value>

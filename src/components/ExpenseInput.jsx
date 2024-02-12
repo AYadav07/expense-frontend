@@ -133,7 +133,7 @@ export const ExpenseInput = ({ setUpdate }) => {
   const [error, setError] = useState();
   const [deleteCategory, setDeleteCategory] = useState(false);
   const [cat, setCat] = useRecoilState(catAtom);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   function validateInput() {
     if (amount <= 0 || amount > 9999999) {
       const err = new Error("Amount should be between 1 and 9999999");
@@ -165,7 +165,7 @@ export const ExpenseInput = ({ setUpdate }) => {
       e.preventDefault();
       validateInput();
       const expenseData = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/expense/add-expense",
+        `${apiUrl}/api/expense/add-expense`,
         { amount, category, description, expenseDate },
         { withCredentials: true }
       );
@@ -192,7 +192,7 @@ export const ExpenseInput = ({ setUpdate }) => {
       e.preventDefault();
 
       const data = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/expense/add-category",
+        `${apiUrl}/api/expense/add-category`,
         { cat: newCategory },
         { withCredentials: true }
       );

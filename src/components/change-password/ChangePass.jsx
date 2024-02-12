@@ -133,14 +133,14 @@ export const ChangePass = () => {
   const [oldPass, setOldPass] = useState("");
   const [pass, setPass] = useState("");
   const [confPass, setConfPass] = useState("");
-
   const [matched, setMatched] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   async function handleSubmit(e) {
     try {
       e.preventDefault();
       const data = axios.post(
-        "https://expense-server-db0x.onrender.com/api/auth/change-pass",
+        `${apiUrl}/api/auth/change-pass`,
         { pass, oldPass },
         { withCredentials: true }
       );

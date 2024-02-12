@@ -77,9 +77,9 @@ const Input = styled.input`
 export const Filter = ({ setData, setFilter }) => {
   const [toDate, setToDate] = useState("");
   const [fromDate, setFromDate] = useState("");
-  const [cats, setCats] = useState([]);
+  const [cats, setCats] = useState();
   const [filtered, setFiltered] = useState(false);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   async function handleFilter() {
     try {
       if (filtered) {
@@ -92,7 +92,7 @@ export const Filter = ({ setData, setFilter }) => {
         console.log("Quesry String is : " + queryString);
         try {
           const resData = await axios.get(
-            `https://expense-server-db0x.onrender.com/api/expense/get-expense-data?${queryString}`,
+            `${apiUrl}/api/expense/get-expense-data?${queryString}`,
             { withCredentials: true }
           );
           console.log(resData);
