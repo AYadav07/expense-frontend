@@ -2,9 +2,10 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { AddOption } from "./AddOption";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import { DeleteCat } from "./DeleteCat";
 import { catAtom } from "../recoil/atom/catOptions";
+import { updateAtom } from "../recoil/atom/updateAtom";
 
 const InputContainer = styled.div`
   display: flex;
@@ -122,7 +123,8 @@ const ErrorMessage = styled.div`
   background-color: #f8f8f8;
 `;
 
-export const ExpenseInput = ({ setUpdate }) => {
+export const ExpenseInput = () => {
+  const setUpdate = useSetRecoilState(updateAtom);
   const [amount, setAmount] = useState(0);
   const [category, setCategory] = useState("");
   const [description, setDescription] = useState("");
@@ -133,7 +135,7 @@ export const ExpenseInput = ({ setUpdate }) => {
   const [error, setError] = useState();
   const [deleteCategory, setDeleteCategory] = useState(false);
   const [cat, setCat] = useRecoilState(catAtom);
-
+  const apiUrl = process.env.REACT_APP_API_URL;
   function validateInput() {
     if (amount <= 0 || amount > 9999999) {
       const err = new Error("Amount should be between 1 and 9999999");
@@ -165,7 +167,7 @@ export const ExpenseInput = ({ setUpdate }) => {
       e.preventDefault();
       validateInput();
       const expenseData = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/expense/add-expense",
+        `${apiUrl}/api/expense/add-expense`,
         { amount, category, description, expenseDate },
         { withCredentials: true }
       );
@@ -192,7 +194,7 @@ export const ExpenseInput = ({ setUpdate }) => {
       e.preventDefault();
 
       const data = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/expense/add-category",
+        `${apiUrl}/api/expense/add-category`,
         { cat: newCategory },
         { withCredentials: true }
       );
@@ -232,13 +234,7 @@ export const ExpenseInput = ({ setUpdate }) => {
         </InputItems>
         <InputItems style={{ position: "relative" }}>
           <Label>Category</Label>
-          {/* <Input
-        placeholder="Category"
-        value={category}
-        onChange={(e) => {
-          setCategory(e.target.value);
-        }}
-      /> */}
+
           <DropDownItems value={category} onChange={onChangeDropdown}>
             <Options key={200002} value={""}>
               Select

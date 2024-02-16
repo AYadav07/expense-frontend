@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-//import ExpenseItem from "./ExpenseItem";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ExpenseInput } from "./ExpenseInput";
 import { DisplayEachExpense } from "./DisplayEachExpense";
 import { GraphicalView } from "./GraphicalView";
-import { Topbar } from "./Topbar";
+import { useRecoilValue } from "recoil";
+import { updateAtom } from "../recoil/atom/updateAtom";
+// import { userAtom } from "../recoil/atom/userAtom";
+// import { catAtom } from "../recoil/atom/catOptions";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -15,7 +17,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5vh;
-  padding-top: 9vh;
   // overflow-y: visible;
 
   &::-webkit-scrollbar {
@@ -47,7 +48,7 @@ const TopDataWrapper = styled.div`
 
   @media (max-width: 480px) {
     flex-direction: column;
-    gap: 1vw;
+    gap: 3vh;
     font-size: 25px;
     min-width: 92vw;
   }
@@ -67,6 +68,10 @@ const TopDataItems = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2vh;
+
+  @media (max-width: 480px) {
+    gap: 1vh;
+  }
 `;
 
 const TopDataItemHeading = styled.div`
@@ -106,25 +111,33 @@ export const Home = () => {
     expenses: [],
   });
   const [error, setError] = useState("");
-  const [updated, setUpdate] = useState(false);
+  const updated = useRecoilValue(updateAtom);
+  // const setUser = useSetRecoilState(userAtom);
+  // const setCat = useSetRecoilState(catAtom);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchExpense() {
       try {
-        const expense = await axios.get(
-          "https://expense-server-db0x.onrender.com/api/expense/get-expense",
-          {
-            withCredentials: true,
-            headers: {
-              "Content-Type": "application/json", // Replace with your token
-            },
-          }
-        );
+        const expense = await axios.get(`${apiUrl}/api/expense/get-expense`, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "application/json", // Replace with your token
+          },
+        });
         setExpenseData(expense.data);
       } catch (err) {
         setError(err);
+        // setUser({
+        //   username: "",
+        //   email: "",
+        //   name: "",
+        //   profile_pic: "",
+        //   userId: "",
+        // });
+        // setCat([]);
         console.log(error);
         navigate("/sign-in");
       }
@@ -136,10 +149,9 @@ export const Home = () => {
     console.log("expense are: ");
     console.log(expenseData.expenses);
   }, [expenseData]);
-  console.log("first");
+
   return (
     <>
-      <Topbar />
       <Container>
         <TopDataWrapper>
           <TopDataGroup>
@@ -183,7 +195,7 @@ export const Home = () => {
             <TopData>₹{expenseData.lastOneYearExpense}</TopData>
           </TopDataItems>
         </TopDataWrapper>
-        <ExpenseInput setUpdate={setUpdate} />
+        <ExpenseInput />
         {/* <DataWrapper>
           <ExpenseItem
             color={"#faf8f8"}
@@ -206,10 +218,7 @@ export const Home = () => {
             />
           ))}
         </DataWrapper> */}
-        <DisplayEachExpense
-          setUpdate={setUpdate}
-          expenses={expenseData.expenses}
-        />
+        <DisplayEachExpense expenses={expenseData.expenses} />
 
         <GraphicalView
           dailyData={expenseData.dailyExpenses}

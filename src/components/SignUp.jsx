@@ -4,6 +4,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useUsername } from "../hooks/useUsername";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../recoil/atom/userAtom";
+import { useLoginStatus } from "../hooks/checkLoginStatus";
 
 const Container = styled.div`
   background-color: #121212;
@@ -120,19 +123,29 @@ export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const user = useRecoilValue(userAtom);
 
-  const isAvail = useUsername(username, 3000);
+  const loginStatus = useLoginStatus();
+
+  if (loginStatus) {
+    window.location.href = `/`;
+  }
+
+  const apiUrl = process.env.REACT_APP_API_URL;
+
+  if (user && user.userId?.length > 0) {
+    window.location.href = `/`;
+  }
+
+  const isAvail = useUsername(username, 300);
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      const data = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/auth/sign-up",
-        {
-          username,
-          email,
-          password,
-        }
-      );
+      const data = await axios.post(`${apiUrl}/api/auth/sign-up`, {
+        username,
+        email,
+        password,
+      });
       console.log(data);
     } catch (err) {
       setError(err.message);
@@ -148,7 +161,16 @@ export const SignUp = () => {
             <Item>
               <Lable>User Name</Lable>
               <Input onChange={(e) => setUsername(e.target.value)} />
-              {isAvail ? <div>yes</div> : <div>no</div>}
+              {username.length >= 3 &&
+                (isAvail ? (
+                  <div style={{ color: "green", padding: "3px 0 0 5px" }}>
+                    Username is available.
+                  </div>
+                ) : (
+                  <div style={{ color: "red", padding: "3px 0 0 5px" }}>
+                    Sorry! Username is not available.
+                  </div>
+                ))}
             </Item>
             <Item>
               <Lable>Email</Lable>

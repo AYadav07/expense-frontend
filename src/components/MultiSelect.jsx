@@ -2,6 +2,8 @@ import React from "react";
 
 import Select from "react-select";
 import makeAnimated from "react-select/animated";
+import { useRecoilValue } from "recoil";
+import { catAtom } from "../recoil/atom/catOptions";
 
 const animatedComponents = makeAnimated();
 
@@ -9,11 +11,18 @@ export const MultiSelect = ({ setCats, cats }) => {
   const handleSelectChange = (selectedOptions) => {
     setCats(selectedOptions);
   };
-  const C = [
-    { label: "food", value: "food" },
-    { label: "drink", value: "drink" },
-  ];
+  // const C =
 
+  // [
+  //   { label: "food", value: "food" },
+  //   { label: "drink", value: "drink" },
+  // ];
+  const catVal = useRecoilValue(catAtom);
+  const selctItems = catVal.map((item) => {
+    return { label: item, value: item };
+  });
+
+  console.log(selctItems);
   const customStyles = {
     // Default styles
     container: (provided) => ({
@@ -35,7 +44,7 @@ export const MultiSelect = ({ setCats, cats }) => {
       closeMenuOnSelect={false}
       components={animatedComponents}
       isMulti
-      options={C}
+      options={selctItems}
       value={cats}
       onChange={handleSelectChange}
       styles={customStyles}

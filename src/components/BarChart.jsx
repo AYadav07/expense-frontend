@@ -3,6 +3,10 @@ import styled from "styled-components";
 import { Bar } from "./Bar";
 
 const BarchartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background-color: white;
   max-width: 96vw;
   border-radius: 10px;
@@ -25,14 +29,29 @@ const BarGraph = styled.div`
     width: 88vw;
     font-size: 10px;
     justify-content: space-between;
-    gap: 0;
+    gap: 0.5vw;
   }
 `;
 
-export const BarChart = ({ data, width }) => {
+const Heading = styled.div`
+  align-items: center;
+  color: #a202ff;
+  font-size: 30px;
+  font-weight: 600;
+
+  @media (max-width: 480px) {
+    font-size: 15px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+`;
+
+export const BarChart = ({ data, width, heading }) => {
   const maxValue = Math.max(...data.map((item) => item.amount));
   return (
     <BarchartContainer>
+      <Heading>{heading}</Heading>
       <BarGraph>
         {data.map((item, index) => {
           const h = (item.amount / maxValue) * 40;

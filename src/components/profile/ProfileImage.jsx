@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -49,11 +50,12 @@ const Action = styled.div`
   color: black;
 `;
 export const ProfileImage = () => {
-  const imgsrc = "https://expense-server-db0x.onrender.com/get-profile-pic/";
+  const imgsrc = `${process.env.REACT_APP_API_URL}/get-profile-pic/`;
   const [user, setUser] = useRecoilState(userAtom);
   const [edit, setEdit] = useState(false);
   const [image, setImage] = useState(imgsrc + user.profile_pic);
   const [formData, setFormData] = useState(null);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   //   function logFormData(formData) {
   //     for (const pair of formData.entries()) {
@@ -64,11 +66,14 @@ export const ProfileImage = () => {
     try {
       console.log(formData);
       const resData = await axios.post(
-        "https://expense-server-db0x.onrender.com/api/upload/profile-pic",
+        `${apiUrl}/api/upload/profile-pic`,
         formData,
         { withCredentials: true }
       );
-      setUser(resData.data);
+      if (resData.data) {
+        setUser(resData.data);
+        setEdit(false);
+      }
       console.log(resData);
     } catch (error) {
       console.log(error);
@@ -78,7 +83,7 @@ export const ProfileImage = () => {
   function handleChange(e) {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
+      let imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
       const fileName = Date.now() + file.name;
       const imageData = new FormData();
@@ -115,7 +120,13 @@ export const ProfileImage = () => {
                 </label>
               ) : (
                 <div>
-                  <CloseOutlinedIcon onClick={() => setEdit(false)} />
+                  <CloseOutlinedIcon
+                    onClick={() => {
+                      setEdit(false);
+                      setImage(imgsrc + user.profile_pic);
+                      setFormData(null);
+                    }}
+                  />
                 </div>
               )}
 

@@ -3,6 +3,8 @@ import axios from "axios";
 import React from "react";
 import styled from "styled-components";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import { useSetRecoilState } from "recoil";
+import { updateAtom } from "../recoil/atom/updateAtom";
 //import DeleteIcon from "@styled-icons/fluentui-system-regular/Delete";
 
 const Container = styled.div`
@@ -63,11 +65,13 @@ const DeleteIconStyle = styled.div`
   }
 `;
 
-const ExpenseItem = ({ col, bgcol, expense, setUpdate }) => {
+const ExpenseItem = ({ col, bgcol, expense }) => {
+  const setUpdate = useSetRecoilState(updateAtom);
+  const apiUrl = process.env.REACT_APP_API_URL;
   async function handleDelete(id) {
     try {
       const res = await axios.delete(
-        `https://expense-server-db0x.onrender.com/api/expense/remove-expense/${id}`,
+        `${apiUrl}/api/expense/remove-expense/${id}`,
         { withCredentials: true }
       );
       console.log(res);

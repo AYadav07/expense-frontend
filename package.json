@@ -5,8 +5,9 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server .",
-    "build": "webpack .",
-    "lint": "eslint src"
+    "build": "webpack --config webpack.production.config.js --mode production",
+    "lint": "eslint src",
+    "devstart": "webpack serve --config webpack.development.config.js --mode development"
   },
   "author": "dev_aydev",
   "license": "ISC",
@@ -16,12 +17,14 @@
     "@babel/preset-env": "^7.23.6",
     "@babel/preset-react": "^7.23.3",
     "babel-loader": "^9.1.3",
+    "clean-webpack-plugin": "^4.0.0",
+    "dotenv-webpack": "^8.0.1",
     "eslint": "^8.56.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-webpack-plugin": "^4.0.1",
-    "html-webpack-plugin": "^5.5.4",
-    "webpack": "^5.89.0",
+    "html-webpack-plugin": "^5.6.0",
+    "webpack": "^5.90.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },
