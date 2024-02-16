@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server .",
-    "build": "webpack .",
+    "build": "webpack --config webpack.production.config.js --mode production",
     "lint": "eslint src",
     "devstart": "webpack serve --config webpack.development.config.js --mode development"
   },
@@ -24,7 +24,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-webpack-plugin": "^4.0.1",
     "html-webpack-plugin": "^5.6.0",
-    "webpack": "^5.90.1",
+    "webpack": "^5.90.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
   },

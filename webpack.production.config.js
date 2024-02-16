@@ -6,14 +6,14 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   mode: "production",
-  entry: "./src/index.js",
+  entry: "./index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./public/index.html",
+      template: path.join(__dirname, "public", "index.html"),
       minify: {
         collapseWhitespace: true,
         removeComments: true,
@@ -37,13 +37,9 @@ module.exports = {
           loader: "babel-loader",
         },
       },
-      {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"],
-      },
     ],
   },
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: [".js", ".jsx", ".json"],
   },
 };
