@@ -11,6 +11,7 @@ const Container = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 2vh;
 
   @media (max-width: 480px) {
     padding-top: 5vh;

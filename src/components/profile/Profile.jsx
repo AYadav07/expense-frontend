@@ -7,8 +7,8 @@ import { userAtom } from "../../recoil/atom/userAtom";
 import { useUsername } from "../../hooks/useUsername";
 
 const Container = styled.div`
-  min-width: 90vw;
-  min-height: 90vh;
+  max-width: 88vw;
+  min-height: 80vh;
   background-color: #070119e2;
   color: white;
   font-size: 25px;

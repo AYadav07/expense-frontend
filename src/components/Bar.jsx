@@ -8,26 +8,34 @@ const BarConatiner = styled.div`
   align-items: center;
 
   @media (max-width: 480px) {
+    width: ${(props) => `${props.width}vw`};
     gap: 1vh;
   }
 `;
-const Data = styled.div``;
+const Data = styled.div`
+  transform: rotate(-60deg);
+  @media (max-width: 480px) {
+    font-size: 10px;
+    transform: rotate(-75deg);
+  }
+`;
 const Bottom = styled.div``;
 const Bars = styled.div`
   height: ${(props) => {
-    return props.height + "vh";
+    return `${props.height}vh`;
   }};
   background-color: red;
   width: ${(props) => {
-    return props.width + "vw";
+    return `${props.width}vw`;
   }};
 
   @media (max-width: 480px) {
     height: ${(props) => {
-      return props.height / 2 + "vh";
+      //console.log(typeof props.height);
+      return `${props.height / 2}vh`;
     }};
     width: ${(props) => {
-      return props.width / 2 + "vw";
+      return `${props.width / 2}vw`;
     }};
   }
 `;
@@ -40,7 +48,7 @@ export const Bar = ({
   width,
 }) => {
   return (
-    <BarConatiner b={barbackground}>
+    <BarConatiner b={barbackground} width={width}>
       <Data>{amount}</Data>
       <Bars height={height} barcolor={barcolor} width={width}></Bars>
       <Bottom>{label}</Bottom>

@@ -4,6 +4,9 @@ import styled from "styled-components";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { useUsername } from "../hooks/useUsername";
+import { useRecoilValue } from "recoil";
+import { userAtom } from "../recoil/atom/userAtom";
+import { useLoginStatus } from "../hooks/checkLoginStatus";
 
 const Container = styled.div`
   background-color: #121212;
@@ -120,8 +123,20 @@ export const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const user = useRecoilValue(userAtom);
+
+  const loginStatus = useLoginStatus();
+
+  if (loginStatus) {
+    window.location.href = `/`;
+  }
 
   const apiUrl = process.env.REACT_APP_API_URL;
+
+  if (user && user.userId?.length > 0) {
+    window.location.href = `/`;
+  }
+
   const isAvail = useUsername(username, 300);
   async function handleSubmit(e) {
     try {

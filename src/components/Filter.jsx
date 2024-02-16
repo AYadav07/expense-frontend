@@ -2,6 +2,8 @@ import axios from "axios";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { MultiSelect } from "./MultiSelect";
+import { useSetRecoilState } from "recoil";
+import { updateAtom } from "../recoil/atom/updateAtom";
 
 const Container = styled.div`
   display: flex;
@@ -80,10 +82,12 @@ export const Filter = ({ setData, setFilter }) => {
   const [cats, setCats] = useState();
   const [filtered, setFiltered] = useState(false);
   const apiUrl = process.env.REACT_APP_API_URL;
+  const setUpdate = useSetRecoilState(updateAtom);
   async function handleFilter() {
     try {
       if (filtered) {
         setFilter(false);
+        setUpdate((u) => !u);
       } else {
         setFiltered(true);
         const categories = cats.map((item) => item.value).join(",");

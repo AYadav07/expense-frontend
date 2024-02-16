@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../recoil/atom/userAtom";
 import { catAtom } from "../recoil/atom/catOptions";
+import { useLoginStatus } from "../hooks/checkLoginStatus";
+//import { loginAtom } from "../recoil/atom/login";
 
 const Container = styled.div`
   background-color: #121212;
@@ -120,16 +122,26 @@ export const SignIn = () => {
   const [error, setError] = useState("");
   const [user, setUser] = useRecoilState(userAtom);
   const [cat, setCat] = useRecoilState(catAtom);
+  //const [login, setLogin] = useRecoilState(loginAtom);
+
+  const loginStatus = useLoginStatus();
+
+  if (loginStatus) {
+    window.location.href = `/`;
+  }
 
   const navigate = useNavigate();
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   console.log("displaying user: ");
   console.log(user);
-  // if (user.userId.length > 0) {
-  //   navigate("/");
+
+  // if (login) {
+  //   window.location.href = `/`;
   // }
+
   // eslint-disable-next-line no-undef
-  const apiUrl = process.env.REACT_APP_API_URL;
+
   async function handleSubmit(e) {
     try {
       e.preventDefault();
@@ -144,27 +156,27 @@ export const SignIn = () => {
           withCredentials: true,
           headers: {
             "Content-Type": "application/json",
-            // eslint-disable-next-line no-undef
-            //Authorization: `Bearer ${accessToken}`, // Replace with your token
           },
         }
       );
-      console.log(data.data);
+
+      console.log("shzsduhfu dkxjfzsf");
+      console.log(data);
+
       if (data?.data.user) {
         setUser(data.data.user);
         setCat(data.data.cat);
+        //setLogin(true);
+        navigate("/");
       }
-      navigate("/");
+
       console.log(cat);
       console.log(user);
     } catch (err) {
+      //setLogin(false);
       setError(err.message);
     }
   }
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   console.log("from .env" + apiUrl);
   return (

@@ -93,8 +93,16 @@ export const GraphicalView = ({ dailyData, monthlyData }) => {
 
   return (
     <Container>
-      <BarChart data={newDailyData} width={2} />
-      <BarChart data={newMonthlyData} width={4} />
+      <BarChart
+        data={newDailyData}
+        width={2}
+        heading={"Daily expenses of last 30 days"}
+      />
+      <BarChart
+        data={newMonthlyData}
+        width={4}
+        heading={"Monthly expenses of last 12 months"}
+      />
     </Container>
   );
 };

@@ -2,7 +2,6 @@ import React, { /*useEffect,*/ useEffect, useState } from "react";
 import ExpenseItem from "./ExpenseItem";
 import styled from "styled-components";
 import { ExpenseTableHeading } from "./ExpenseTableHeading";
-import { Filter } from "./Filter";
 //import axios from "axios";
 
 const DataWrapper = styled.div`
@@ -20,31 +19,11 @@ const DataWrapper = styled.div`
   }
 `;
 
-const Button = styled.button`
-  background-color: #706f6f;
-  color: #353131;
-  width: 7vw;
-  padding: 1vh 1vw;
-  cursor: pointer;
-  margin-bottom: 1vh;
-  margin-left: auto;
-  margin-right: 1vw;
-  border: none;
-  border-radius: 10px;
-
-  @media (max-width: 480px) {
-    width: 20vw;
-    margin-left: auto;
-    margin-right: 1vw;
-  }
-`;
-
-export const DisplayEachExpense = ({ setUpdate, expenses }) => {
+export const DisplayEachExpense = ({ expenses }) => {
   // const [cats, setCats] = useState([]);
   // const [toDate, setToDate] = useState("");
   // const [fromDate, setFromDate] = useState("2024-01-01");
   const [data, setData] = useState([]);
-  const [filter, setFilter] = useState(false);
   // useEffect(() => {
   //   const queryString = `cats=${cats.join(
   //     ","
@@ -69,23 +48,11 @@ export const DisplayEachExpense = ({ setUpdate, expenses }) => {
   // }, []);
 
   useEffect(() => {
-    if (!filter) {
-      setData(expenses);
-    }
-  }, [filter]);
-
-  useEffect(() => {
     setData(expenses);
   }, [expenses]);
 
   return (
     <DataWrapper>
-      {filter ? (
-        <Filter setData={setData} setFilter={setFilter} />
-      ) : (
-        <Button onClick={() => setFilter(true)}>Use Filter</Button>
-        //<button onClick={() => setFilter(true)}> Use Filter</button>
-      )}
       <ExpenseTableHeading col={"#faf8f8"} bgcol={"#333333"} />
       {data.map((expense, index) => (
         <ExpenseItem
@@ -93,7 +60,6 @@ export const DisplayEachExpense = ({ setUpdate, expenses }) => {
           col={"#000000"}
           bgcol={index % 2 === 0 ? "#f5f5f5" : "#e0e0e0"}
           expense={expense}
-          setUpdate={setUpdate}
         />
       ))}
     </DataWrapper>

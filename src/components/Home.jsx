@@ -5,9 +5,10 @@ import { useNavigate } from "react-router-dom";
 import { ExpenseInput } from "./ExpenseInput";
 import { DisplayEachExpense } from "./DisplayEachExpense";
 import { GraphicalView } from "./GraphicalView";
-import { Topbar } from "./Topbar";
 import { useRecoilValue } from "recoil";
-import { userAtom } from "../recoil/atom/userAtom";
+import { updateAtom } from "../recoil/atom/updateAtom";
+// import { userAtom } from "../recoil/atom/userAtom";
+// import { catAtom } from "../recoil/atom/catOptions";
 
 const Container = styled.div`
   min-height: 100vh;
@@ -16,7 +17,6 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 5vh;
-  padding-top: 9vh;
   // overflow-y: visible;
 
   &::-webkit-scrollbar {
@@ -26,7 +26,6 @@ const Container = styled.div`
   @media (max-width: 480px) {
     flex-direction: column;
     gap: 2vh;
-    padding-top: 3vh;
     max-width: 100vw;
     &::-webkit-scrollbar {
       display: none;
@@ -49,7 +48,7 @@ const TopDataWrapper = styled.div`
 
   @media (max-width: 480px) {
     flex-direction: column;
-    gap: 1vw;
+    gap: 3vh;
     font-size: 25px;
     min-width: 92vw;
   }
@@ -69,6 +68,10 @@ const TopDataItems = styled.div`
   align-items: center;
   justify-content: center;
   gap: 2vh;
+
+  @media (max-width: 480px) {
+    gap: 1vh;
+  }
 `;
 
 const TopDataItemHeading = styled.div`
@@ -108,15 +111,12 @@ export const Home = () => {
     expenses: [],
   });
   const [error, setError] = useState("");
-  const [updated, setUpdate] = useState(false);
-  const user = useRecoilValue(userAtom);
+  const updated = useRecoilValue(updateAtom);
+  // const setUser = useSetRecoilState(userAtom);
+  // const setCat = useSetRecoilState(catAtom);
 
   const apiUrl = process.env.REACT_APP_API_URL;
   const navigate = useNavigate();
-
-  if (user?.userId?.length == 0) {
-    navigate("/sign-in");
-  }
 
   useEffect(() => {
     async function fetchExpense() {
@@ -130,6 +130,14 @@ export const Home = () => {
         setExpenseData(expense.data);
       } catch (err) {
         setError(err);
+        // setUser({
+        //   username: "",
+        //   email: "",
+        //   name: "",
+        //   profile_pic: "",
+        //   userId: "",
+        // });
+        // setCat([]);
         console.log(error);
         navigate("/sign-in");
       }
@@ -141,10 +149,9 @@ export const Home = () => {
     console.log("expense are: ");
     console.log(expenseData.expenses);
   }, [expenseData]);
-  console.log("first");
+
   return (
     <>
-      <Topbar />
       <Container>
         <TopDataWrapper>
           <TopDataGroup>
@@ -188,7 +195,7 @@ export const Home = () => {
             <TopData>₹{expenseData.lastOneYearExpense}</TopData>
           </TopDataItems>
         </TopDataWrapper>
-        <ExpenseInput setUpdate={setUpdate} />
+        <ExpenseInput />
         {/* <DataWrapper>
           <ExpenseItem
             color={"#faf8f8"}
@@ -211,10 +218,7 @@ export const Home = () => {
             />
           ))}
         </DataWrapper> */}
-        <DisplayEachExpense
-          setUpdate={setUpdate}
-          expenses={expenseData.expenses}
-        />
+        <DisplayEachExpense expenses={expenseData.expenses} />
 
         <GraphicalView
           dailyData={expenseData.dailyExpenses}

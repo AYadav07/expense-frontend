@@ -4,21 +4,21 @@ import styled from "styled-components";
 import { useSetRecoilState } from "recoil";
 import { userAtom } from "../recoil/atom/userAtom";
 import { catAtom } from "../recoil/atom/catOptions";
-import { deleteCookie } from "../utils/browserStorage";
 import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MenuOpenOutlinedIcon from "@mui/icons-material/MenuOpenOutlined";
+import axios from "axios";
 
 const Wrapper = styled.div`
   display: flex;
-  width: 96vw;
+  width: 94vw;
   height: 8vh;
   background-color: #274da4df;
   color: white;
   align-items: center;
   justify-content: space-between;
   padding: 0 2vw;
-  position: fixed;
   margin: 0 auto;
+  border-radius: 15px;
 
   &::-webkit-scrollbar {
     display: none;
@@ -26,11 +26,12 @@ const Wrapper = styled.div`
 
   @media (max-width: 480px) {
     flex-direction: column;
-    width: 100vw;
+    max-width: 88vw;
     height: auto;
     gap: 2vh;
     justify-content: flex-start;
     align-items: flex-start;
+    border-radius: 5px;
   }
 `;
 const LeftDetails = styled.div`
@@ -92,10 +93,18 @@ export const Topbar = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
+  const apiUrl = process.env.REACT_APP_API_URL;
+
   async function handelLogout() {
     try {
-      deleteCookie("access_token");
-      console.log(document);
+      try {
+        const res = await axios.get(`${apiUrl}/api/auth/logout`, {
+          withCredentials: true,
+        });
+        console.log(res.data);
+      } catch (err) {
+        console.log(err.message);
+      }
 
       setUser({
         username: "",
@@ -125,14 +134,14 @@ export const Topbar = () => {
         <LeftDetails open={open}>
           Logo
           <StyledLink to={"/"}>Home</StyledLink>
-          <StyledLink to={"/"}>ExpenseList</StyledLink>
-          <StyledLink to={"/"}>ExpenseList</StyledLink>
+          <StyledLink to={"/expense-list"}>ExpenseList</StyledLink>
+          <StyledLink to={"/"}>Contact</StyledLink>
         </LeftDetails>
 
         <RightDetails open={open}>
           <StyledLink to={"/profile"}>Profile</StyledLink>
           <StyledLink to={"/change-pass"}>Change Password</StyledLink>
-          <button onClick={handelLogout}>Logout</button>
+          <StyledLink onClick={handelLogout}>Logout</StyledLink>
         </RightDetails>
       </Wrapper>
     </>
