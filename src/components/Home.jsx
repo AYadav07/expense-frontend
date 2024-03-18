@@ -40,7 +40,7 @@ const TopDataWrapper = styled.div`
   gap: 2vw;
   font-size: 37px;
   flex-wrap: wrap;
-  background-color: grey;
+  background-color: white;
   margin-top: 2vh;
   padding: 2vh 1vw;
   min-width: 96vw;
@@ -121,10 +121,11 @@ export const Home = () => {
   useEffect(() => {
     async function fetchExpense() {
       try {
+        const token = localStorage.getItem("token");
         const expense = await axios.get(`${apiUrl}/api/expense/get-expense`, {
           withCredentials: true,
           headers: {
-            "Content-Type": "application/json", // Replace with your token
+            Authorization: `Bearer ${token}`,
           },
         });
         setExpenseData(expense.data);
@@ -144,11 +145,6 @@ export const Home = () => {
     }
     fetchExpense();
   }, [updated]);
-
-  useEffect(() => {
-    console.log("expense are: ");
-    console.log(expenseData.expenses);
-  }, [expenseData]);
 
   return (
     <>

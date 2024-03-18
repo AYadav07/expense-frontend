@@ -10,7 +10,6 @@ export const useUsername = (inputVal, milliSeconds) => {
         const resData = await axios.get(
           `${apiUrl}/api/auth/check-username?username=${inputVal}`
         );
-        console.log(resData);
         setData(resData.data.avail);
       } catch (err) {
         console.log(err);

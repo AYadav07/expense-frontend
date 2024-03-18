@@ -89,7 +89,6 @@ export const GraphicalView = ({ dailyData, monthlyData }) => {
 
   const newDailyData = dailyDataConversion(dailyData);
   const newMonthlyData = monthDataConversion(monthlyData);
-  console.log(newMonthlyData);
 
   return (
     <Container>

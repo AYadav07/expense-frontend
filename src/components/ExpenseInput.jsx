@@ -13,7 +13,7 @@ const InputContainer = styled.div`
   align-items: center;
   padding: 2vh 1vw;
   min-width: 96vw;
-  background-color: grey;
+  background-color: white;
   flex-wrap: wrap;
   border-radius: 10px;
 
@@ -27,7 +27,6 @@ const InputWrapper = styled.div`
   align-items: center;
   gap: 2vw;
   padding: 2vh 1vw;
-  background-color: grey;
   flex-wrap: wrap;
   border-radius: 10px;
 
@@ -166,12 +165,17 @@ export const ExpenseInput = () => {
     try {
       e.preventDefault();
       validateInput();
-      const expenseData = await axios.post(
+      const token = localStorage.getItem("token");
+      await axios.post(
         `${apiUrl}/api/expense/add-expense`,
         { amount, category, description, expenseDate },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      console.log(expenseData.data);
       setAmount(0);
       setCategory("");
       setDescription("");
@@ -181,13 +185,10 @@ export const ExpenseInput = () => {
       setUpdate((updated) => !updated);
     } catch (err) {
       console.log(err);
-      console.log(err.message);
       //console.log(error.type);
       setError(err.message);
     }
   }
-
-  console.log(typeof expenseDate);
 
   async function handleAddingCategory(e) {
     try {
@@ -211,10 +212,8 @@ export const ExpenseInput = () => {
   function onChangeDropdown(e) {
     if (e.target.value === "Add new category") {
       setAddCategory(true);
-      console.log(addCategory);
     } else if (e.target.value === "delete category") {
       setDeleteCategory(true);
-      console.log(deleteCategory);
     } else {
       setCategory(e.target.value);
     }

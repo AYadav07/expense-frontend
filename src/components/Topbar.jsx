@@ -98,10 +98,13 @@ export const Topbar = () => {
   async function handelLogout() {
     try {
       try {
-        const res = await axios.get(`${apiUrl}/api/auth/logout`, {
+        const token = localStorage.getItem("token");
+        await axios.get(`${apiUrl}/api/auth/logout`, {
           withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-        console.log(res.data);
       } catch (err) {
         console.log(err.message);
       }

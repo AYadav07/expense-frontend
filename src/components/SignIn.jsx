@@ -5,7 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { userAtom } from "../recoil/atom/userAtom";
 import { catAtom } from "../recoil/atom/catOptions";
-import { useLoginStatus } from "../hooks/checkLoginStatus";
+// import { useLoginStatus } from "../hooks/checkLoginStatus";
 //import { loginAtom } from "../recoil/atom/login";
 
 const Container = styled.div`
@@ -120,31 +120,17 @@ export const SignIn = () => {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [user, setUser] = useRecoilState(userAtom);
-  const [cat, setCat] = useRecoilState(catAtom);
+  const [setUser] = useRecoilState(userAtom);
+  const [setCat] = useRecoilState(catAtom);
   //const [login, setLogin] = useRecoilState(loginAtom);
-
-  const loginStatus = useLoginStatus();
-
-  if (loginStatus) {
-    window.location.href = `/`;
-  }
 
   const navigate = useNavigate();
   const apiUrl = process.env.REACT_APP_API_URL;
 
-  console.log("displaying user: ");
-  console.log(user);
-
-  // if (login) {
-  //   window.location.href = `/`;
-  // }
-
-  // eslint-disable-next-line no-undef
-
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      const token = localStorage.getItem("token");
       const data = await axios.post(
         // eslint-disable-next-line no-undef
         `${apiUrl}/api/auth/sign-in`,
@@ -155,30 +141,24 @@ export const SignIn = () => {
         {
           withCredentials: true,
           headers: {
-            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-
-      console.log("shzsduhfu dkxjfzsf");
-      console.log(data);
 
       if (data?.data.user) {
         setUser(data.data.user);
         setCat(data.data.cat);
         //setLogin(true);
+        localStorage.setItem("token", data.data.token);
         navigate("/");
       }
-
-      console.log(cat);
-      console.log(user);
     } catch (err) {
       //setLogin(false);
       setError(err.message);
     }
   }
 
-  console.log("from .env" + apiUrl);
   return (
     <>
       <Container>

@@ -70,18 +70,20 @@ const ExpenseItem = ({ col, bgcol, expense }) => {
   const apiUrl = process.env.REACT_APP_API_URL;
   async function handleDelete(id) {
     try {
-      const res = await axios.delete(
-        `${apiUrl}/api/expense/remove-expense/${id}`,
-        { withCredentials: true }
-      );
-      console.log(res);
+      const token = localStorage.getItem("token");
+      await axios.delete(`${apiUrl}/api/expense/remove-expense/${id}`, {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       setUpdate((updated) => !updated);
     } catch (err) {
       console.log(err);
     }
   }
 
-  console.log(setUpdate);
   const parseDate = (dateString) => {
     const months = [
       "Jan",
