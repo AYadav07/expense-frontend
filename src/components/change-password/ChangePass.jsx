@@ -140,10 +140,16 @@ export const ChangePass = () => {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      const token = localStorage.getItem("token");
       const data = axios.post(
         `${apiUrl}/api/auth/change-pass`,
         { pass, oldPass },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       console.log(data);
     } catch (error) {

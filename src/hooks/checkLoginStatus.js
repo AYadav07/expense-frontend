@@ -7,9 +7,15 @@ export const useLoginStatus = () => {
   useEffect(() => {
     async function checkUsername() {
       try {
+        const token = localStorage.getItem("token");
         const resData = await axios.get(
           `${apiUrl}/api/auth/check-login-status`,
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         if (resData.status == 200) setLogin(true);
       } catch (err) {
@@ -18,6 +24,8 @@ export const useLoginStatus = () => {
       }
     }
     checkUsername();
+
+    return () => {};
   }, []);
 
   return login;

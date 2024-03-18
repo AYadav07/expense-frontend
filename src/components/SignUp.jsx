@@ -141,12 +141,11 @@ export const SignUp = () => {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
-      const data = await axios.post(`${apiUrl}/api/auth/sign-up`, {
+      await axios.post(`${apiUrl}/api/auth/sign-up`, {
         username,
         email,
         password,
       });
-      console.log(data);
     } catch (err) {
       setError(err.message);
     }

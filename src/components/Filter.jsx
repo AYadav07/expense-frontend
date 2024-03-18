@@ -92,14 +92,18 @@ export const Filter = ({ setData, setFilter }) => {
         setFiltered(true);
         const categories = cats.map((item) => item.value).join(",");
         const queryString = `cats=${categories}&fromDate=${fromDate}&toDate=${toDate}`;
-        console.log(cats);
-        console.log("Quesry String is : " + queryString);
+
         try {
+          const token = localStorage.getItem("token");
           const resData = await axios.get(
             `${apiUrl}/api/expense/get-expense-data?${queryString}`,
-            { withCredentials: true }
+            {
+              withCredentials: true,
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
           );
-          console.log(resData);
           //console.log(setData);
           setData(resData.data);
         } catch (err) {

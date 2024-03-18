@@ -7,7 +7,7 @@
     "start": "webpack-dev-server .",
     "build": "webpack --config webpack.production.config.js --mode production",
     "lint": "eslint src",
-    "devstart": "webpack serve --config webpack.development.config.js --mode development"
+    "dev": "webpack serve --config webpack.development.config.js --mode development"
   },
   "author": "dev_aydev",
   "license": "ISC",

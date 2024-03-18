@@ -124,11 +124,17 @@ const ResetPassword = () => {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      const token = localStorage.getItem("token");
       await axios.post(
         // eslint-disable-next-line no-undef
         `${apiUrl}/api/auth/reset-password`,
         { password },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       navigate("/");
     } catch (err) {
@@ -139,10 +145,6 @@ const ResetPassword = () => {
   useEffect(() => {
     setMatched(password === confirmPass && password.length > 0);
   }, [password, confirmPass]);
-
-  console.log(password);
-  console.log(confirmPass);
-  console.log(confirmPass === password);
 
   return (
     <Container>

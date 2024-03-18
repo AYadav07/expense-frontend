@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
@@ -64,17 +64,21 @@ export const ProfileImage = () => {
   //   }
   async function onSubmitImg() {
     try {
-      console.log(formData);
+      const token = localStorage.getItem("token");
       const resData = await axios.post(
         `${apiUrl}/api/upload/profile-pic`,
         formData,
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (resData.data) {
         setUser(resData.data);
         setEdit(false);
       }
-      console.log(resData);
     } catch (error) {
       console.log(error);
     }
@@ -100,11 +104,6 @@ export const ProfileImage = () => {
     // setImage(formData);
     // console.log(image);
   }
-
-  useEffect(() => {
-    console.log("in effect");
-    console.log(image);
-  }, [image]);
 
   return (
     <>

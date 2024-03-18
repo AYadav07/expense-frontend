@@ -171,14 +171,19 @@ export const Profile = () => {
   async function handleSubmit(e) {
     try {
       e.preventDefault();
+      const token = localStorage.getItem("token");
       const userData = await axios.post(
         // eslint-disable-next-line no-undef
         `${apiUrl}/api/profile/update-profile`,
         { name, username },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
       if (userData.data) setUser(userData.data);
-      console.log(userData);
     } catch (err) {
       console.log(err);
     }

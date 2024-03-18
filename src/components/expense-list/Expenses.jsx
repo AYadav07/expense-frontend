@@ -75,8 +75,12 @@ export const Expenses = () => {
   useEffect(() => {
     async function fetchExpenses() {
       try {
+        const token = localStorage.getItem("token");
         const res = await axios.get(`${apiUrl}/api/expense/get-all-expenses`, {
           withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
         setExpenses(res.data);
       } catch (err) {
@@ -86,7 +90,7 @@ export const Expenses = () => {
     fetchExpenses();
 
     return () => {
-      console.log("Cleanup function ran");
+      //console.log("Cleanup function ran");
     };
   }, [updated]);
 

@@ -54,17 +54,20 @@ const Items = styled.div`
 export const DeleteCat = ({ setDel }) => {
   const [cat, setCat] = useRecoilState(catAtom);
 
-  console.log("first");
-  console.log(cat);
-
   async function handelDelete(item) {
     try {
+      const token = localStorage.getItem("token");
       const res = await axios.post(
         `${process.env.REACT_APP_API_URL}/api/expense/remove-category`,
         {
           cat: item,
         },
-        { withCredentials: true }
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
 
       if (res.data)
